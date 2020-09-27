@@ -6,7 +6,7 @@
     android:clickable="true"
     android:orientation="vertical"
     android:padding="5dp"
-    tools:context=".RegisterCharge">
+    tools:context=".ui.register.RegisterCharge">
 
 
     <EditText

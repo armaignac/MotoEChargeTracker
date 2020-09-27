@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BatteryChargeTracker">
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.main.MainActivity"
             android:label="@string/title_activity_main2"
             android:theme="@style/Theme.BatteryChargeTracker.AppBarOverlay">
             <intent-filter>
@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RegisterCharge"
+        <activity android:name=".ui.register.RegisterCharge"
             android:label="@string/title_activity_register_charge">
         </activity>
     </application>

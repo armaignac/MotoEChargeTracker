@@ -1,10 +1,11 @@
-package com.anandy.batterychargetracker
+package com.anandy.batterychargetracker.ui.register
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.anandy.batterychargetracker.ui.common.DatePickerFragment
+import com.anandy.batterychargetracker.R
 import com.anandy.batterychargetracker.databinding.ActivityRegisterChargeBinding
 
 import java.text.SimpleDateFormat
@@ -23,12 +24,13 @@ class RegisterCharge : AppCompatActivity() {
 
 //        charge = Charge()
         binding.textDateCharge.setOnClickListener {
-            val datePicker = DatePickerFragment() { selectedDate ->
-                val dateFormat = "dd/MM/yyyy"
-                val sdf = SimpleDateFormat(dateFormat, Locale.US)
-                binding.textDateCharge.setText (sdf.format(selectedDate))
+            val datePicker =
+                DatePickerFragment() { selectedDate ->
+                    val dateFormat = "dd/MM/yyyy"
+                    val sdf = SimpleDateFormat(dateFormat, Locale.US)
+                    binding.textDateCharge.setText(sdf.format(selectedDate))
 //                charge.date = selectedDate
-            }
+                }
             datePicker.show(supportFragmentManager, "datePicker")
          }
     }

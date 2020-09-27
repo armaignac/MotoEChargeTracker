@@ -1,11 +1,12 @@
-package com.anandy.batterychargetracker
+package com.anandy.batterychargetracker.ui.main
 
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import com.anandy.batterychargetracker.ui.register.RegisterCharge
 import com.anandy.batterychargetracker.databinding.ActivityMainBinding
 import com.anandy.batterychargetracker.databinding.ContentMainBinding
 import com.anandy.batterychargetracker.model.BatteryChargeAdapter
+import com.anandy.batterychargetracker.startActivity
 
 class MainActivity : AppCompatActivity() {
 

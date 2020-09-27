@@ -1,4 +1,4 @@
-package com.anandy.batterychargetracker
+package com.anandy.batterychargetracker.ui.common
 
 import android.app.DatePickerDialog
 import android.app.Dialog
