@@ -11,7 +11,7 @@ import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 
-class BatteryChargeAdapter(var items: List<BatteryCharge>): RecyclerView.Adapter<BatteryChargeAdapter.ViewHolder>() {
+class BatteryChargeAdapter(var items: List<BatteryCharge> = emptyList()): RecyclerView.Adapter<BatteryChargeAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.battery_charge_record)

@@ -9,6 +9,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import androidx.recyclerview.widget.RecyclerView
 import com.anandy.batterychargetracker.model.BatteryCharge
 
@@ -28,6 +32,15 @@ inline fun <reified T : Activity> Context.startActivity(vararg pairs: Pair<Strin
             putExtras(bundleOf(*pairs))
         }
         .also { startActivity(it) }
+}
+
+@Suppress("UNCHECKED_CAST")
+inline fun <reified T : ViewModel> FragmentActivity.getViewModel(crossinline factory: () -> T): T {
+
+    val vmFactory = object : ViewModelProvider.Factory {
+        override fun <U : ViewModel> create(modelClass: Class<U>): U = factory() as U
+    }
+    return ViewModelProvider(this, vmFactory).get()
 }
 
 fun populateItems() : List<BatteryCharge>{

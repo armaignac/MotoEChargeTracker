@@ -10,12 +10,15 @@ import java.util.*
 
 class DatePickerFragment(private val onDateSet : (Date) -> Unit) : DialogFragment(), DatePickerDialog.OnDateSetListener {
 
+    lateinit var selectedDate: Date
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         // Use the current date as the default date in the picker
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
+        selectedDate = c.time
 
         // Create a new instance of DatePickerDialog and return it
         return DatePickerDialog(requireContext(), this, year, month, day)
@@ -26,6 +29,7 @@ class DatePickerFragment(private val onDateSet : (Date) -> Unit) : DialogFragmen
         calendar.set(Calendar.YEAR, year)
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-        onDateSet(calendar.time)
+        selectedDate = calendar.time
+        onDateSet(selectedDate)
     }
 }
