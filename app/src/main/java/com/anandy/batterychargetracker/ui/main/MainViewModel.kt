@@ -6,8 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.anandy.batterychargetracker.model.BatteryCharge
 import com.anandy.batterychargetracker.model.BatteryChargeRepository
+import com.anandy.batterychargetracker.ui.common.ScopedViewModel
+import kotlinx.coroutines.launch
 
-class MainViewModel(private val chargeRepository: BatteryChargeRepository) : ViewModel() {
+class MainViewModel(private val chargeRepository: BatteryChargeRepository) : ScopedViewModel() {
 
     private val _model = MutableLiveData<UiModel>()
     val model: LiveData<UiModel>
@@ -16,11 +18,17 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Vie
             return _model
         }
 
+    init {
+        initScope()
+    }
+
     sealed class UiModel {
         class Content (val records: List<BatteryCharge>) : UiModel()
     }
 
     private fun refresh(){
-        _model.value = UiModel.Content(chargeRepository.getRecords())
+        launch {
+            _model.value = UiModel.Content(chargeRepository.getRecords())
+        }
     }
 }

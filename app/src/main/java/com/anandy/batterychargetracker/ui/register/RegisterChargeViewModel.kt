@@ -6,16 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.anandy.batterychargetracker.model.BatteryCharge
 import com.anandy.batterychargetracker.model.BatteryChargeRepository
+import com.anandy.batterychargetracker.ui.common.ScopedViewModel
 import com.anandy.batterychargetracker.ui.main.MainViewModel
 import java.util.*
 
-class RegisterChargeViewModel(private val chargeRepository: BatteryChargeRepository) : ViewModel()  {
+class RegisterChargeViewModel(private val chargeRepository: BatteryChargeRepository) : ScopedViewModel()  {
     private val _model = MutableLiveData<UiModel>()
 
     val model: LiveData<UiModel>
         get() {
             return _model
         }
+
+    init {
+        initScope()
+    }
 
 
     sealed class UiModel {
