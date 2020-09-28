@@ -1,4 +1,4 @@
-package com.anandy.batterychargetracker.model
+package com.anandy.batterychargetracker.ui.main
 
 import android.view.View
 import android.view.ViewGroup
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anandy.batterychargetracker.R
 import com.anandy.batterychargetracker.databinding.BatteryChargeRecordBinding
 import com.anandy.batterychargetracker.inflate
-import com.anandy.batterychargetracker.populateItems
+import com.anandy.batterychargetracker.model.BatteryCharge
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
@@ -15,7 +15,9 @@ class BatteryChargeAdapter(var items: List<BatteryCharge> = emptyList()): Recycl
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.battery_charge_record)
-        return ViewHolder(view)
+        return ViewHolder(
+            view
+        )
     }
 
     override fun getItemCount(): Int = items.size
