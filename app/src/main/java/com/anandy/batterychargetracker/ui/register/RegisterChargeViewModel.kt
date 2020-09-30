@@ -8,6 +8,7 @@ import com.anandy.batterychargetracker.model.BatteryCharge
 import com.anandy.batterychargetracker.model.BatteryChargeRepository
 import com.anandy.batterychargetracker.ui.common.ScopedViewModel
 import com.anandy.batterychargetracker.ui.main.MainViewModel
+import kotlinx.coroutines.launch
 import java.util.*
 
 class RegisterChargeViewModel(private val chargeRepository: BatteryChargeRepository) : ScopedViewModel()  {
@@ -28,8 +29,10 @@ class RegisterChargeViewModel(private val chargeRepository: BatteryChargeReposit
     }
 
     fun onSave(kilometers: Int, date: Date){
-        val charge = BatteryCharge(kilometers, date)
-        chargeRepository.saveCharge(charge)
+        val charge = BatteryCharge(0, kilometers, date)
+        launch {
+            chargeRepository.saveCharge(charge)
+        }
     }
 }
 

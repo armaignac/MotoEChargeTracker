@@ -1,6 +1,9 @@
 package com.anandy.batterychargetracker.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
-data class BatteryCharge(var kilometers: Int, var date: Date) {
+@Entity
+data class BatteryCharge(@PrimaryKey(autoGenerate = true) val id: Int, var kilometers: Int, var date: Date) {
 }

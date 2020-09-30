@@ -13,10 +13,12 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.anandy.batterychargetracker.model.BatteryCharge
 
 import java.util.*
+import kotlin.properties.Delegates
 
 fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
@@ -34,6 +36,25 @@ inline fun <reified T : Activity> Context.startActivity(vararg pairs: Pair<Strin
         .also { startActivity(it) }
 }
 
+inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffUtil(
+    initialValue: List<T>,
+    crossinline areItemsTheSame: (T, T) -> Boolean = { old, new -> old == new },
+    crossinline areContentsTheSame: (T, T) -> Boolean = { old, new -> old == new }
+) =
+    Delegates.observable(initialValue) { _, old, new ->
+        DiffUtil.calculateDiff(object : DiffUtil.Callback() {
+            override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                areItemsTheSame(old[oldItemPosition], new[newItemPosition])
+
+            override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean =
+                areContentsTheSame(old[oldItemPosition], new[newItemPosition])
+
+            override fun getOldListSize(): Int = old.size
+
+            override fun getNewListSize(): Int = new.size
+        }).dispatchUpdatesTo(this@basicDiffUtil)
+    }
+
 @Suppress("UNCHECKED_CAST")
 inline fun <reified T : ViewModel> FragmentActivity.getViewModel(crossinline factory: () -> T): T {
 
@@ -43,59 +64,62 @@ inline fun <reified T : ViewModel> FragmentActivity.getViewModel(crossinline fac
     return ViewModelProvider(this, vmFactory).get()
 }
 
+val Context.app: BatteryChargeApp
+    get() = applicationContext as BatteryChargeApp
+
 fun populateItems() : List<BatteryCharge>{
     return listOf(
-        BatteryCharge(37, getDate(19, Calendar.JULY)),
-        BatteryCharge(51, getDate(20, Calendar.JULY)),
-        BatteryCharge(89, getDate(22, Calendar.JULY)),
-        BatteryCharge(126, getDate(23, Calendar.JULY)),
-        BatteryCharge(201, getDate(25, Calendar.JULY)),
-        BatteryCharge(234, getDate(26, Calendar.JULY)),
-        BatteryCharge(264, getDate(27, Calendar.JULY)),
-        BatteryCharge(301, getDate(29, Calendar.JULY)),
-        BatteryCharge(337, getDate(30, Calendar.JULY)),
-        BatteryCharge(378, getDate(31, Calendar.JULY)),
-        BatteryCharge(413, getDate(1, Calendar.AUGUST)),
-        BatteryCharge(450, getDate(2, Calendar.AUGUST)),
-        BatteryCharge(497, getDate(3, Calendar.AUGUST)),
-        BatteryCharge(542, getDate(5, Calendar.AUGUST)),
-        BatteryCharge(565, getDate(6, Calendar.AUGUST)),
-        BatteryCharge(581, getDate(7, Calendar.AUGUST)),
-        BatteryCharge(620, getDate(8, Calendar.AUGUST)),
-        BatteryCharge(647, getDate(10, Calendar.AUGUST)),
-        BatteryCharge(693, getDate(11, Calendar.AUGUST)),
-        BatteryCharge(740, getDate(12, Calendar.AUGUST)),
-        BatteryCharge(779, getDate(14, Calendar.AUGUST)),
-        BatteryCharge(811, getDate(15, Calendar.AUGUST)),
-        BatteryCharge(852, getDate(16, Calendar.AUGUST)),
-        BatteryCharge(899, getDate(18, Calendar.AUGUST)),
-        BatteryCharge(946, getDate(20, Calendar.AUGUST)),
-        BatteryCharge(981, getDate(21, Calendar.AUGUST)),
-        BatteryCharge(1019, getDate(22, Calendar.AUGUST)),
-        BatteryCharge(1059, getDate(23, Calendar.AUGUST)),
-        BatteryCharge(1104, getDate(25, Calendar.AUGUST)),
-        BatteryCharge(1124, getDate(26, Calendar.AUGUST)),
-        BatteryCharge(1166, getDate(27, Calendar.AUGUST)),
-        BatteryCharge(1200, getDate(28, Calendar.AUGUST)),
-        BatteryCharge(1243, getDate(29, Calendar.AUGUST)),
-        BatteryCharge(1284, getDate(30, Calendar.AUGUST)),
-        BatteryCharge(1309, getDate(31, Calendar.AUGUST)),
-        BatteryCharge(1337, getDate(1, Calendar.SEPTEMBER)),
-        BatteryCharge(1384, getDate(3, Calendar.SEPTEMBER)),
-        BatteryCharge(1407, getDate(4, Calendar.SEPTEMBER)),
-        BatteryCharge(1448, getDate(7, Calendar.SEPTEMBER)),
-        BatteryCharge(1488, getDate(8, Calendar.SEPTEMBER)),
-        BatteryCharge(1523, getDate(10, Calendar.SEPTEMBER)),
-        BatteryCharge(1558, getDate(11, Calendar.SEPTEMBER)),
-        BatteryCharge(1603, getDate(12, Calendar.SEPTEMBER)),
-        BatteryCharge(1630, getDate(14, Calendar.SEPTEMBER)),
-        BatteryCharge(1667, getDate(15, Calendar.SEPTEMBER)),
-        BatteryCharge(1699, getDate(16, Calendar.SEPTEMBER)),
-        BatteryCharge(1736, getDate(17, Calendar.SEPTEMBER)),
-        BatteryCharge(1777, getDate(18, Calendar.SEPTEMBER)),
-        BatteryCharge(1811, getDate(19, Calendar.SEPTEMBER)),
-        BatteryCharge(1851, getDate(21, Calendar.SEPTEMBER))
-    ).reversed()
+        BatteryCharge(0, 37, getDate(19, Calendar.JULY)),
+        BatteryCharge(0,51, getDate(20, Calendar.JULY)),
+        BatteryCharge(0,89, getDate(22, Calendar.JULY)),
+        BatteryCharge(0,126, getDate(23, Calendar.JULY)),
+        BatteryCharge(0,201, getDate(25, Calendar.JULY)),
+        BatteryCharge(0,234, getDate(26, Calendar.JULY)),
+        BatteryCharge(0,264, getDate(27, Calendar.JULY)),
+        BatteryCharge(0,301, getDate(29, Calendar.JULY)),
+        BatteryCharge(0,337, getDate(30, Calendar.JULY)),
+        BatteryCharge(0,378, getDate(31, Calendar.JULY)),
+        BatteryCharge(0,413, getDate(1, Calendar.AUGUST)),
+        BatteryCharge(0,450, getDate(2, Calendar.AUGUST)),
+        BatteryCharge(0,497, getDate(3, Calendar.AUGUST)),
+        BatteryCharge(0,542, getDate(5, Calendar.AUGUST)),
+        BatteryCharge(0,565, getDate(6, Calendar.AUGUST)),
+        BatteryCharge(0,581, getDate(7, Calendar.AUGUST)),
+        BatteryCharge(0,620, getDate(8, Calendar.AUGUST)),
+        BatteryCharge(0,647, getDate(10, Calendar.AUGUST)),
+        BatteryCharge(0,693, getDate(11, Calendar.AUGUST)),
+        BatteryCharge(0,740, getDate(12, Calendar.AUGUST)),
+        BatteryCharge(0,779, getDate(14, Calendar.AUGUST)),
+        BatteryCharge(0,811, getDate(15, Calendar.AUGUST)),
+        BatteryCharge(0,852, getDate(16, Calendar.AUGUST)),
+        BatteryCharge(0,899, getDate(18, Calendar.AUGUST)),
+        BatteryCharge(0,946, getDate(20, Calendar.AUGUST)),
+        BatteryCharge(0,981, getDate(21, Calendar.AUGUST)),
+        BatteryCharge(0,1019, getDate(22, Calendar.AUGUST)),
+        BatteryCharge(0,1059, getDate(23, Calendar.AUGUST)),
+        BatteryCharge(0,1104, getDate(25, Calendar.AUGUST)),
+        BatteryCharge(0,1124, getDate(26, Calendar.AUGUST)),
+        BatteryCharge(0,1166, getDate(27, Calendar.AUGUST)),
+        BatteryCharge(0,1200, getDate(28, Calendar.AUGUST)),
+        BatteryCharge(0,1243, getDate(29, Calendar.AUGUST)),
+        BatteryCharge(0,1284, getDate(30, Calendar.AUGUST)),
+        BatteryCharge(0,1309, getDate(31, Calendar.AUGUST)),
+        BatteryCharge(0,1337, getDate(1, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1384, getDate(3, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1407, getDate(4, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1448, getDate(7, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1488, getDate(8, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1523, getDate(10, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1558, getDate(11, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1603, getDate(12, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1630, getDate(14, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1667, getDate(15, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1699, getDate(16, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1736, getDate(17, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1777, getDate(18, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1811, getDate(19, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1851, getDate(21, Calendar.SEPTEMBER))
+    )
 }
 
 private fun getDate(dayOfMonth: Int, month: Int):Date{

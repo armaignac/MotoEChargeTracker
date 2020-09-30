@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import com.anandy.batterychargetracker.ui.common.DatePickerFragment
 import com.anandy.batterychargetracker.R
+import com.anandy.batterychargetracker.app
 import com.anandy.batterychargetracker.databinding.ActivityRegisterChargeBinding
 import com.anandy.batterychargetracker.getViewModel
 import com.anandy.batterychargetracker.model.BatteryChargeRepository
@@ -37,7 +38,7 @@ class RegisterCharge : AppCompatActivity() {
             datePicker.show(supportFragmentManager, "datePicker")
         }
 
-        viewModel = getViewModel { RegisterChargeViewModel(BatteryChargeRepository()) }
+        viewModel = getViewModel { RegisterChargeViewModel(BatteryChargeRepository(app)) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

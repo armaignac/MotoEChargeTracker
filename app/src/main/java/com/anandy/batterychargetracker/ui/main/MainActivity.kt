@@ -1,8 +1,10 @@
 package com.anandy.batterychargetracker.ui.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
+import com.anandy.batterychargetracker.app
 import com.anandy.batterychargetracker.ui.register.RegisterCharge
 import com.anandy.batterychargetracker.databinding.ActivityMainBinding
 import com.anandy.batterychargetracker.databinding.ContentMainBinding
@@ -23,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        viewModel = getViewModel {MainViewModel(BatteryChargeRepository())}
+        viewModel = getViewModel {MainViewModel(BatteryChargeRepository(app))}
 
         val mainContent: ContentMainBinding = binding.content
         mainContent.batteryChargeRecycler.adapter = recordsAdapter
@@ -36,8 +38,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateUi(model: UiModel){
+
         when (model) {
-            is UiModel.Content -> recordsAdapter.items = model.records
+            is UiModel.Content -> {
+                recordsAdapter.items = model.records
+            }
         }
     }
 }
