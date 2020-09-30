@@ -1,4 +1,4 @@
-package com.anandy.batterychargetracker.ui.common
+package com.anandy.motoechargetracker.ui.common
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

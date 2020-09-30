@@ -1,4 +1,4 @@
-package com.anandy.batterychargetracker
+package com.anandy.motoechargetracker
 
 import android.app.Activity
 import android.content.Context
@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.anandy.batterychargetracker.model.BatteryCharge
+import com.anandy.motoechargetracker.model.BatteryCharge
 
 import java.util.*
 import kotlin.properties.Delegates
@@ -118,7 +118,14 @@ fun populateItems() : List<BatteryCharge>{
         BatteryCharge(0,1736, getDate(17, Calendar.SEPTEMBER)),
         BatteryCharge(0,1777, getDate(18, Calendar.SEPTEMBER)),
         BatteryCharge(0,1811, getDate(19, Calendar.SEPTEMBER)),
-        BatteryCharge(0,1851, getDate(21, Calendar.SEPTEMBER))
+        BatteryCharge(0,1851, getDate(21, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1895, getDate(22, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1923, getDate(23, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1964, getDate(24, Calendar.SEPTEMBER)),
+        BatteryCharge(0,1999, getDate(26, Calendar.SEPTEMBER)),
+        BatteryCharge(0,2031, getDate(28, Calendar.SEPTEMBER)),
+        BatteryCharge(0,2047, getDate(29, Calendar.SEPTEMBER)),
+        BatteryCharge(0,2075, getDate(30, Calendar.SEPTEMBER))
     )
 }
 

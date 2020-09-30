@@ -1,4 +1,4 @@
-package com.anandy.batterychargetracker.model
+package com.anandy.motoechargetracker.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

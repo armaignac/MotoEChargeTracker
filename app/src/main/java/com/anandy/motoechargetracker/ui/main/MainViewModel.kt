@@ -1,13 +1,10 @@
-package com.anandy.batterychargetracker.ui.main
+package com.anandy.motoechargetracker.ui.main
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.anandy.batterychargetracker.model.BatteryCharge
-import com.anandy.batterychargetracker.model.BatteryChargeRepository
-import com.anandy.batterychargetracker.ui.common.ScopedViewModel
+import com.anandy.motoechargetracker.model.BatteryCharge
+import com.anandy.motoechargetracker.model.BatteryChargeRepository
+import com.anandy.motoechargetracker.ui.common.ScopedViewModel
 import kotlinx.coroutines.launch
 
 class MainViewModel(private val chargeRepository: BatteryChargeRepository) : ScopedViewModel() {

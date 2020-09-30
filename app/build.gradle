@@ -10,7 +10,7 @@ android {
     buildToolsVersion "30.0.1"
 
     defaultConfig {
-        applicationId "com.anandy.batterychargetracker"
+        applicationId "com.anandy.motoechargetracker"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1

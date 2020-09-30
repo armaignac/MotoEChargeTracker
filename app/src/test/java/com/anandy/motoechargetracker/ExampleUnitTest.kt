@@ -1,4 +1,4 @@
-package com.anandy.batterychargetracker
+package com.anandy.motoechargetracker
 
 import org.junit.Test
 

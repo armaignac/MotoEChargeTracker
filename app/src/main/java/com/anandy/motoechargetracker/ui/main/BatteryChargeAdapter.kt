@@ -1,13 +1,13 @@
-package com.anandy.batterychargetracker.ui.main
+package com.anandy.motoechargetracker.ui.main
 
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.anandy.batterychargetracker.R
-import com.anandy.batterychargetracker.basicDiffUtil
-import com.anandy.batterychargetracker.databinding.BatteryChargeRecordBinding
-import com.anandy.batterychargetracker.inflate
-import com.anandy.batterychargetracker.model.BatteryCharge
+import com.anandy.motoechargetracker.R
+import com.anandy.motoechargetracker.basicDiffUtil
+import com.anandy.motoechargetracker.databinding.BatteryChargeRecordBinding
+import com.anandy.motoechargetracker.inflate
+import com.anandy.motoechargetracker.model.BatteryCharge
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 

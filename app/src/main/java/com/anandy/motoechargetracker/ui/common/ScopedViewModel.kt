@@ -1,4 +1,4 @@
-package com.anandy.batterychargetracker.ui.common
+package com.anandy.motoechargetracker.ui.common
 
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel

@@ -1,17 +1,16 @@
-package com.anandy.batterychargetracker.ui.main
+package com.anandy.motoechargetracker.ui.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.anandy.batterychargetracker.app
-import com.anandy.batterychargetracker.ui.register.RegisterCharge
-import com.anandy.batterychargetracker.databinding.ActivityMainBinding
-import com.anandy.batterychargetracker.databinding.ContentMainBinding
-import com.anandy.batterychargetracker.getViewModel
-import com.anandy.batterychargetracker.model.BatteryChargeRepository
-import com.anandy.batterychargetracker.startActivity
-import com.anandy.batterychargetracker.ui.main.MainViewModel.UiModel
+import com.anandy.motoechargetracker.app
+import com.anandy.motoechargetracker.ui.register.RegisterCharge
+import com.anandy.motoechargetracker.databinding.ActivityMainBinding
+import com.anandy.motoechargetracker.databinding.ContentMainBinding
+import com.anandy.motoechargetracker.getViewModel
+import com.anandy.motoechargetracker.model.BatteryChargeRepository
+import com.anandy.motoechargetracker.startActivity
+import com.anandy.motoechargetracker.ui.main.MainViewModel.UiModel
 
 class MainActivity : AppCompatActivity() {
 

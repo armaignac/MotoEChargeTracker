@@ -1,17 +1,15 @@
-package com.anandy.batterychargetracker.ui.register
+package com.anandy.motoechargetracker.ui.register
 
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
-import com.anandy.batterychargetracker.ui.common.DatePickerFragment
-import com.anandy.batterychargetracker.R
-import com.anandy.batterychargetracker.app
-import com.anandy.batterychargetracker.databinding.ActivityRegisterChargeBinding
-import com.anandy.batterychargetracker.getViewModel
-import com.anandy.batterychargetracker.model.BatteryChargeRepository
+import com.anandy.motoechargetracker.ui.common.DatePickerFragment
+import com.anandy.motoechargetracker.R
+import com.anandy.motoechargetracker.app
+import com.anandy.motoechargetracker.databinding.ActivityRegisterChargeBinding
+import com.anandy.motoechargetracker.getViewModel
+import com.anandy.motoechargetracker.model.BatteryChargeRepository
 
 import java.text.SimpleDateFormat
 import java.util.*

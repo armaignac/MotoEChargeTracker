@@ -1,9 +1,7 @@
-package com.anandy.batterychargetracker.model
+package com.anandy.motoechargetracker.model
 
-import android.util.Log
-import com.anandy.batterychargetracker.BatteryChargeApp
-import com.anandy.batterychargetracker.database.BatteryChargeDatabase
-import com.anandy.batterychargetracker.populateItems
+import com.anandy.motoechargetracker.BatteryChargeApp
+import com.anandy.motoechargetracker.populateItems
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
