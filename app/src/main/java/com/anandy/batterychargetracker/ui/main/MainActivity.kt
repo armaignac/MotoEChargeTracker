@@ -32,13 +32,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.model.observe(this, Observer(::updateUi))
 
-        binding.fab.setOnClickListener { view ->
+        binding.fab.setOnClickListener { _ ->
             startActivity<RegisterCharge>()
         }
     }
 
     private fun updateUi(model: UiModel){
-
         when (model) {
             is UiModel.Content -> {
                 recordsAdapter.items = model.records
