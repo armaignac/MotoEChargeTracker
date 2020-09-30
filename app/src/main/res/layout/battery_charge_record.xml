@@ -3,63 +3,56 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
     android:padding="2dp">
 
-
-    <TableLayout
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:stretchColumns="2">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-        <TableRow
+        <TextView
+            android:id="@+id/textKMDifference"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="+350" />
+
+        <TextView
+            android:id="@+id/textDateDifference"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:text="+1 dia(s)" />
 
-            <TextView
-                android:id="@+id/textKMDifference"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginLeft="5dp"
-                android:gravity="bottom"
-                android:lineSpacingExtra="8sp"
-                android:text="+350"
-                android:textSize="14sp" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/textChargeKM"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:baselineAligned="false"
-                android:paddingLeft="15dp"
-                android:text="Kilometros recorridos"
-                android:textSize="30sp" />
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="5"
+        android:orientation="vertical">
 
-        </TableRow>
-
-        <TableRow
+        <TextView
+            android:id="@+id/textChargeKM"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:baselineAligned="false"
+            android:paddingLeft="15dp"
+            android:text="Kilometros recorridos"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
-            <TextView
-                android:id="@+id/textDateDifference"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="end"
-                android:layout_marginLeft="5dp"
-                android:gravity="bottom"
-                android:text="+1 dia(s)"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/textChargeDate"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="15dp"
-                android:text="Fecha carga"
-                android:textSize="18sp" />
-        </TableRow>
-    </TableLayout>
+        <TextView
+            android:id="@+id/textChargeDate"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:text="Fecha carga" />
+    </LinearLayout>
 
 </LinearLayout>
