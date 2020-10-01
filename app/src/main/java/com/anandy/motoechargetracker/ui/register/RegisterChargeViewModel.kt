@@ -25,20 +25,13 @@ class RegisterChargeViewModel(private val chargeRepository: BatteryChargeReposit
 
 
     sealed class UiModel {
-
+        class Navigation : UiModel()
     }
 
-    fun onSave(kilometers: Int, date: Date){
-        val charge = BatteryCharge(0, kilometers, date)
+    fun onSave(charge: BatteryCharge) {
         launch {
             chargeRepository.saveCharge(charge)
+            _model.value = UiModel.Navigation()
         }
     }
-}
-
-@Suppress("UNCHECKED_CAST")
-class MainViewModelFactory(private val chargeRepository: BatteryChargeRepository) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-        MainViewModel(chargeRepository) as T
 }
