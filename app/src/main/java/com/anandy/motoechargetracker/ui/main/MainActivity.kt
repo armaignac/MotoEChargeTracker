@@ -6,7 +6,6 @@ import androidx.lifecycle.Observer
 import com.anandy.motoechargetracker.app
 import com.anandy.motoechargetracker.ui.register.RegisterCharge
 import com.anandy.motoechargetracker.databinding.ActivityMainBinding
-import com.anandy.motoechargetracker.databinding.ContentMainBinding
 import com.anandy.motoechargetracker.getViewModel
 import com.anandy.motoechargetracker.model.BatteryChargeRepository
 import com.anandy.motoechargetracker.startActivity
@@ -22,12 +21,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
 
         viewModel = getViewModel {MainViewModel(BatteryChargeRepository(app))}
 
-        val mainContent: ContentMainBinding = binding.content
-        mainContent.batteryChargeRecycler.adapter = recordsAdapter
+        binding.batteryChargeRecycler.adapter = recordsAdapter
 
         viewModel.model.observe(this, Observer(::updateUi))
 
