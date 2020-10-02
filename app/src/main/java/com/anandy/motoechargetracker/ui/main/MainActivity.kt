@@ -1,5 +1,6 @@
 package com.anandy.motoechargetracker.ui.main
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -15,9 +16,7 @@ import com.anandy.motoechargetracker.ui.main.MainViewModel.UiModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
-    private val recordsAdapter = BatteryChargeAdapter() { action, charge ->
-        viewModel.onClickedItemAction(action, charge)
-    }
+    private val recordsAdapter = BatteryChargeAdapter(::recordsClickListener)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,11 +34,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUi(model: UiModel){
+    private fun updateUi(model: UiModel) {
         when (model) {
             is UiModel.Content -> {
                 recordsAdapter.items = model.records
             }
         }
     }
+
+    private fun recordsClickListener(
+        action: BatteryChargeAdapter.ChargeItemAction,
+        charge: BatteryCharge
+    ) {
+
+        when (action) {
+            BatteryChargeAdapter.ChargeItemAction.REMOVE -> {
+                val dialogBuilder = AlertDialog.Builder(this)
+                dialogBuilder.setTitle("Delete")
+                dialogBuilder.setMessage("Do you want to remove the record?")
+                dialogBuilder.setPositiveButton("Yes") { _, _ ->
+                    viewModel.onClickedItemAction(action, charge)
+                }
+                dialogBuilder.setNegativeButton("No") { _, _ -> }
+                dialogBuilder.show()
+            }
+        }
+
+    }
 }
+
