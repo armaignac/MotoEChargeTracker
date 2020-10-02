@@ -17,4 +17,7 @@ interface BatteryChargeDao {
 
     @Update
     fun updateCharge(charge: BatteryCharge)
+
+    @Query("DELETE FROM BatteryCharge WHERE id = :id")
+    fun remove(id: Int): Int
 }

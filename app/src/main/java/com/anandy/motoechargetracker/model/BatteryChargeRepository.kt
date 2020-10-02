@@ -19,9 +19,15 @@ class BatteryChargeRepository(application: BatteryChargeApp) {
         }
     }
 
-    suspend fun saveCharge(charge: BatteryCharge) =  withContext(Dispatchers.IO){
-        with(db.batteryChargeDao()){
+    suspend fun saveCharge(charge: BatteryCharge) = withContext(Dispatchers.IO) {
+        with(db.batteryChargeDao()) {
             saveCharge(charge)
+        }
+    }
+
+    suspend fun remove(charge: BatteryCharge) = withContext(Dispatchers.IO) {
+        with(db.batteryChargeDao()) {
+            remove(charge.id)
         }
     }
 }

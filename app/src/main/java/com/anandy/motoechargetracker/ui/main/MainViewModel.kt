@@ -21,12 +21,25 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Sco
     }
 
     sealed class UiModel {
-        class Content (val records: List<BatteryCharge>) : UiModel()
+        class Content(val records: List<BatteryCharge>) : UiModel()
     }
 
-    private fun refresh(){
+    private fun refresh() {
         launch {
             _model.value = UiModel.Content(chargeRepository.getRecords())
         }
+    }
+
+    fun onClickedItemAction(action: BatteryChargeAdapter.ChargeItemAction, item: BatteryCharge) {
+        launch {
+            when (action) {
+                BatteryChargeAdapter.ChargeItemAction.REMOVE -> removeItem(item)
+            }
+        }
+    }
+
+    private suspend fun removeItem(charge: BatteryCharge) {
+        chargeRepository.remove(charge)
+        refresh()
     }
 }

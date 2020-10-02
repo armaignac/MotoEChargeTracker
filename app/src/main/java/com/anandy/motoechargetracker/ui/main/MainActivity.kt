@@ -7,6 +7,7 @@ import com.anandy.motoechargetracker.app
 import com.anandy.motoechargetracker.ui.register.RegisterCharge
 import com.anandy.motoechargetracker.databinding.ActivityMainBinding
 import com.anandy.motoechargetracker.getViewModel
+import com.anandy.motoechargetracker.model.BatteryCharge
 import com.anandy.motoechargetracker.model.BatteryChargeRepository
 import com.anandy.motoechargetracker.startActivity
 import com.anandy.motoechargetracker.ui.main.MainViewModel.UiModel
@@ -14,15 +15,16 @@ import com.anandy.motoechargetracker.ui.main.MainViewModel.UiModel
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
-    private val recordsAdapter =
-        BatteryChargeAdapter()
+    private val recordsAdapter = BatteryChargeAdapter() { action, charge ->
+        viewModel.onClickedItemAction(action, charge)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel = getViewModel {MainViewModel(BatteryChargeRepository(app))}
+        viewModel = getViewModel { MainViewModel(BatteryChargeRepository(app)) }
 
         binding.batteryChargeRecycler.adapter = recordsAdapter
 
