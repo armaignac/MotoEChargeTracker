@@ -21,13 +21,23 @@ class BatteryChargeRepository(application: BatteryChargeApp) {
 
     suspend fun saveCharge(charge: BatteryCharge) = withContext(Dispatchers.IO) {
         with(db.batteryChargeDao()) {
-            saveCharge(charge)
+            if (charge.id == 0) {
+                saveCharge(charge)
+            } else {
+                updateCharge(charge)
+            }
         }
     }
 
     suspend fun remove(charge: BatteryCharge) = withContext(Dispatchers.IO) {
         with(db.batteryChargeDao()) {
             remove(charge.id)
+        }
+    }
+
+    suspend fun getCharge(chargeId: Int): BatteryCharge? = withContext(Dispatchers.IO) {
+        with(db.batteryChargeDao()) {
+            getCharge(chargeId)
         }
     }
 }

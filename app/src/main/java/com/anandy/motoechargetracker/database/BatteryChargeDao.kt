@@ -12,6 +12,9 @@ interface BatteryChargeDao {
     @Query("SELECT COUNT(id) FROM BatteryCharge")
     fun getRecordsCount(): Int
 
+    @Query("SELECT * FROM BatteryCharge WHERE id = :id")
+    fun getCharge(id: Int): BatteryCharge?
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveCharge(charge: BatteryCharge)
 
@@ -20,4 +23,6 @@ interface BatteryChargeDao {
 
     @Query("DELETE FROM BatteryCharge WHERE id = :id")
     fun remove(id: Int): Int
+
+
 }

@@ -2,6 +2,7 @@ package com.anandy.motoechargetracker.ui.main
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.anandy.motoechargetracker.app
@@ -57,6 +58,11 @@ class MainActivity : AppCompatActivity() {
                 }
                 dialogBuilder.setNegativeButton("No") { _, _ -> }
                 dialogBuilder.show()
+            }
+
+            BatteryChargeAdapter.ChargeItemAction.EDIT -> {
+                Log.d("MotoEChargeTraker", "Selected charge $charge")
+                startActivity<RegisterCharge>(RegisterCharge.EXTRA_ID to charge.id)
             }
         }
 

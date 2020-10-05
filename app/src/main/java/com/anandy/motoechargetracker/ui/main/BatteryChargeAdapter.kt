@@ -23,7 +23,7 @@ class BatteryChargeAdapter(private val clickListener: (ChargeItemAction, Battery
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = parent.inflate(R.layout.battery_charge_record)
-        view.setOnClickListener { Toast.makeText(view.context, "Text", Toast.LENGTH_LONG) }
+
         return ViewHolder(
             view
         )
@@ -33,10 +33,12 @@ class BatteryChargeAdapter(private val clickListener: (ChargeItemAction, Battery
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        val nextItem = if(items.size > position + 1) items[position+1] else null
+        val nextItem = if (items.size > position + 1) items[position + 1] else null
+        holder.itemView.setOnClickListener {
+            clickListener(ChargeItemAction.EDIT, item)
+        }
         holder.bind(item, nextItem, clickListener)
     }
-
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
         private val binding = BatteryChargeRecordBinding.bind(view)
@@ -64,6 +66,7 @@ class BatteryChargeAdapter(private val clickListener: (ChargeItemAction, Battery
     }
 
     enum class ChargeItemAction {
-        REMOVE
+        REMOVE,
+        EDIT
     }
 }

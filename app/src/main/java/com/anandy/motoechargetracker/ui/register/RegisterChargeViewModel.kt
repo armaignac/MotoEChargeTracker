@@ -26,12 +26,20 @@ class RegisterChargeViewModel(private val chargeRepository: BatteryChargeReposit
 
     sealed class UiModel {
         class Navigation : UiModel()
+        class UpdateUI(val charge: BatteryCharge) : UiModel()
     }
 
     fun onSave(charge: BatteryCharge) {
         launch {
             chargeRepository.saveCharge(charge)
             _model.value = UiModel.Navigation()
+        }
+    }
+
+    fun onLoadCharge(chargeId: Int) {
+        launch {
+            val charge = chargeRepository.getCharge(chargeId)
+            if (charge != null) _model.postValue(UiModel.UpdateUI(charge))
         }
     }
 }
