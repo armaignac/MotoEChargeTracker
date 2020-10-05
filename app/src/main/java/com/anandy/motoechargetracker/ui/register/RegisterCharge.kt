@@ -7,14 +7,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
+import com.anandy.motoechargetracker.*
 import com.anandy.motoechargetracker.ui.common.DatePickerFragment
-import com.anandy.motoechargetracker.R
-import com.anandy.motoechargetracker.app
 import com.anandy.motoechargetracker.databinding.ActivityRegisterChargeBinding
-import com.anandy.motoechargetracker.getViewModel
 import com.anandy.motoechargetracker.model.BatteryCharge
 import com.anandy.motoechargetracker.model.BatteryChargeRepository
-import com.anandy.motoechargetracker.startActivity
 import com.anandy.motoechargetracker.ui.main.MainActivity
 import com.anandy.motoechargetracker.ui.register.RegisterChargeViewModel.UiModel.Navigation
 import com.anandy.motoechargetracker.ui.register.RegisterChargeViewModel.UiModel.UpdateUI
@@ -84,17 +81,21 @@ class RegisterCharge : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_charge -> {
-                if (charge == null) {
-                    charge = BatteryCharge(
-                        0,
-                        binding.textKilometers.text.toString().toInt(),
-                        datePicker.selectedDate
-                    )
+                if (binding.textKilometers.text.length > 0 && binding.textKilometers.text.toString().toInt() > 0) {
+                    if (charge == null) {
+                        charge = BatteryCharge(
+                            0,
+                            binding.textKilometers.text.toString().toInt(),
+                            datePicker.selectedDate
+                        )
+                    } else {
+                        charge?.kilometers = binding.textKilometers.text.toString().toInt()
+                        charge?.date = datePicker.selectedDate
+                    }
+                    viewModel.onSave(charge!!)
                 } else {
-                    charge?.kilometers = binding.textKilometers.text.toString().toInt()
-                    charge?.date = datePicker.selectedDate
+                    toast("Los kilometros deben ser mayor que 0")
                 }
-                viewModel.onSave(charge!!)
             }
         }
         return super.onOptionsItemSelected(item)
