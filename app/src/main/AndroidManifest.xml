@@ -12,8 +12,7 @@
         android:theme="@style/Theme.BatteryChargeTracker">
         <activity
             android:name="com.anandy.motoechargetracker.ui.main.MainActivity"
-            android:label="@string/title_activity_main"
-            android:theme="@style/Theme.BatteryChargeTracker.AppBarOverlay">
+            android:label="@string/title_activity_main">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
