@@ -20,7 +20,7 @@ import com.anandy.motoechargetracker.model.BatteryCharge
 import java.util.*
 import kotlin.properties.Delegates
 
-fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
 
 fun RecyclerView.ViewHolder.toast(message: String) = itemView.context.toast(message)
 
