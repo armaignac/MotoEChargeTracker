@@ -4,6 +4,7 @@ import com.anandy.motoechargetracker.BatteryChargeApp
 import com.anandy.motoechargetracker.populateItems
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class BatteryChargeRepository(application: BatteryChargeApp) {
 
@@ -21,6 +22,15 @@ class BatteryChargeRepository(application: BatteryChargeApp) {
 
     suspend fun saveCharge(charge: BatteryCharge) = withContext(Dispatchers.IO) {
         with(db.batteryChargeDao()) {
+
+            val calendar = Calendar.getInstance()
+            calendar.time = charge.date
+            calendar.set(Calendar.HOUR_OF_DAY, 0);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            charge.date = calendar.time
             if (charge.id == 0) {
                 saveCharge(charge)
             } else {
