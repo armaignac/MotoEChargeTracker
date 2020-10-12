@@ -24,5 +24,8 @@ interface BatteryChargeDao {
     @Query("DELETE FROM BatteryCharge WHERE id = :id")
     fun remove(id: Int): Int
 
+    @Query("DELETE FROM BatteryCharge")
+    fun removeAllRecords()
+
 
 }

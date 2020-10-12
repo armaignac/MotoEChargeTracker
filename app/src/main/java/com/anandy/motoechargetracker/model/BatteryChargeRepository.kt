@@ -13,7 +13,7 @@ class BatteryChargeRepository(application: BatteryChargeApp) {
 
         with(db.batteryChargeDao()){
             if(getRecordsCount() == 0){
-                populateItems().forEach { this.saveCharge(it) }
+               // populateItems().forEach { this.saveCharge(it) }
             }
             getRecords()
         }
@@ -38,6 +38,12 @@ class BatteryChargeRepository(application: BatteryChargeApp) {
     suspend fun getCharge(chargeId: Int): BatteryCharge? = withContext(Dispatchers.IO) {
         with(db.batteryChargeDao()) {
             getCharge(chargeId)
+        }
+    }
+
+    suspend fun removeAllRecords() = withContext(Dispatchers.IO) {
+        with(db.batteryChargeDao()) {
+            removeAllRecords()
         }
     }
 }

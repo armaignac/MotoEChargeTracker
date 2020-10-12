@@ -6,9 +6,9 @@ import com.karumi.dexter.listener.PermissionDeniedResponse
 import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.single.BasePermissionListener
 
-class PermissionRequester(private val activity: Activity, private val permission: String) {
+class PermissionRequester(private val activity: Activity) {
 
-    fun request(continuation: (Boolean) -> Unit) {
+    fun request(permission: String, continuation: (Boolean) -> Unit) {
         Dexter
             .withActivity(activity)
             .withPermission(permission)

@@ -1,13 +1,19 @@
 package com.anandy.motoechargetracker.ui.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.anandy.motoechargetracker.model.BatteryCharge
 import com.anandy.motoechargetracker.model.BatteryChargeRepository
 import com.anandy.motoechargetracker.ui.common.ScopedViewModel
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
+import java.io.BufferedReader
 import java.io.File
+import java.io.IOException
+import java.io.InputStreamReader
+import java.net.URI
 import java.util.*
 
 class MainViewModel(private val chargeRepository: BatteryChargeRepository) : ScopedViewModel() {
@@ -26,6 +32,7 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Sco
     sealed class UiModel {
         class Content(val records: List<BatteryCharge>) : UiModel()
         class Notify(val msg: String) : UiModel()
+        class Progress() : UiModel()
     }
 
     private fun refresh() {
@@ -66,5 +73,17 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Sco
         refresh()
     }
 
-
+    fun onImportRecords(selectedFileContent: String) {
+        val chargeListType = object : TypeToken<List<BatteryCharge>>() {}.type
+        val fileRecords = Gson().fromJson<List<BatteryCharge>>(selectedFileContent, chargeListType)
+        launch {
+            _model.value = UiModel.Progress()
+            chargeRepository.removeAllRecords()
+            fileRecords.forEach {
+                it.id = 0
+                chargeRepository.saveCharge(it)
+            }
+            refresh()
+        }
+    }
 }
