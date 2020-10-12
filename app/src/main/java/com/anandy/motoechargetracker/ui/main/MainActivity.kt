@@ -44,6 +44,8 @@ class MainActivity : AppCompatActivity() {
         binding.fab.setOnClickListener { _ ->
             startActivity<RegisterCharge>()
         }
+
+        supportActionBar?.setTitle(R.string.title_activity_main)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

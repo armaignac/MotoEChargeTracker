@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MotoE Charge Tracker</string>
+    <string name="app_name">MotoE</string>
     <string name="title_activity_main">Cargas registradas</string>
     <string name="title_activity_register_charge">Registrar carga</string>
     <string name="save">Guardar</string>
