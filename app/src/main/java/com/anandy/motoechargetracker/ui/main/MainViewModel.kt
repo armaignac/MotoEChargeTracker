@@ -5,7 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import com.anandy.motoechargetracker.model.BatteryCharge
 import com.anandy.motoechargetracker.model.BatteryChargeRepository
 import com.anandy.motoechargetracker.ui.common.ScopedViewModel
+import com.google.gson.Gson
 import kotlinx.coroutines.launch
+import java.io.File
+import java.util.*
 
 class MainViewModel(private val chargeRepository: BatteryChargeRepository) : ScopedViewModel() {
 
@@ -22,6 +25,7 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Sco
 
     sealed class UiModel {
         class Content(val records: List<BatteryCharge>) : UiModel()
+        class Notify(val msg: String) : UiModel()
     }
 
     private fun refresh() {
@@ -38,8 +42,29 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Sco
         }
     }
 
+    fun onExportRecords(exportForlder: String) {
+        launch {
+            val records = chargeRepository.getRecords()
+            val jsonString = Gson().toJson(records)
+            val currentDate = Calendar.getInstance()
+            val dateName =
+                "${currentDate.get(Calendar.YEAR)}-${currentDate.get(Calendar.YEAR)}-${currentDate.get(
+                    Calendar.YEAR
+                )}"
+            val timeName =
+                "${currentDate.get(Calendar.HOUR_OF_DAY)}-${currentDate.get(Calendar.MINUTE)}"
+            val dateTimeName = "$dateName-$timeName"
+            val exportFileName = "$exportForlder/MotoE-$dateTimeName.json"
+            val file = File(exportFileName)
+            file.writeText(jsonString)
+            _model.value = UiModel.Notify("Registros exportados en ${file.absolutePath}")
+        }
+    }
+
     private suspend fun removeItem(charge: BatteryCharge) {
         chargeRepository.remove(charge)
         refresh()
     }
+
+
 }
