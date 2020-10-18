@@ -1,50 +1,53 @@
 package com.anandy.motoechargetracker.ui.main
 
+import android.app.AlertDialog
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.anandy.motoechargetracker.model.BatteryCharge
 import com.anandy.motoechargetracker.model.BatteryChargeRepository
+import com.anandy.motoechargetracker.ui.common.Event
 import com.anandy.motoechargetracker.ui.common.ScopedViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.launch
-import java.io.BufferedReader
 import java.io.File
-import java.io.IOException
-import java.io.InputStreamReader
-import java.net.URI
 import java.util.*
 
 class MainViewModel(private val chargeRepository: BatteryChargeRepository) : ScopedViewModel() {
 
-    private val _model = MutableLiveData<UiModel>()
-    val model: LiveData<UiModel>
-        get() {
-            if(_model.value == null) refresh()
-            return _model
-        }
+    private val _items = MutableLiveData<List<BatteryCharge>>()
+    val items: LiveData<List<BatteryCharge>> get() = _items
+
+    private val _navigateToRegister = MutableLiveData<Event<Int>>()
+    val navigateToRegister: LiveData<Event<Int>> get() = _navigateToRegister
+
+    private val _removeCharge = MutableLiveData<Event<BatteryCharge>>()
+    val removeCharge: LiveData<Event<BatteryCharge>> get() = _removeCharge
+
+    private val _toastMessage = MutableLiveData<Event<String>>()
+    val toastMessage: LiveData<Event<String>> get() = _toastMessage
+
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> get() = _loading
 
     init {
         initScope()
-    }
-
-    sealed class UiModel {
-        class Content(val records: List<BatteryCharge>) : UiModel()
-        class Notify(val msg: String) : UiModel()
-        class Progress() : UiModel()
+        refresh()
     }
 
     private fun refresh() {
         launch {
-            _model.value = UiModel.Content(chargeRepository.getRecords())
+            _items.value = chargeRepository.getRecords()
         }
     }
 
     fun onClickedItemAction(action: BatteryChargeAdapter.ChargeItemAction, item: BatteryCharge) {
-        launch {
-            when (action) {
-                BatteryChargeAdapter.ChargeItemAction.REMOVE -> removeItem(item)
+        when (action) {
+            BatteryChargeAdapter.ChargeItemAction.REMOVE -> _removeCharge.value = Event(item)
+            BatteryChargeAdapter.ChargeItemAction.EDIT -> {
+                Log.d("MotoEChargeTraker", "Selected charge $item")
+                _navigateToRegister.value = Event(item.id)
             }
         }
     }
@@ -64,26 +67,29 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Sco
             val exportFileName = "$exportForlder/MotoE-$dateTimeName.json"
             val file = File(exportFileName)
             file.writeText(jsonString)
-            _model.value = UiModel.Notify("Registros exportados en ${file.absolutePath}")
+            _toastMessage.value = Event("Registros exportados en ${file.absolutePath}")
         }
     }
 
-    private suspend fun removeItem(charge: BatteryCharge) {
-        chargeRepository.remove(charge)
-        refresh()
+    fun onRemoveItem(charge: BatteryCharge) {
+        launch {
+            chargeRepository.remove(charge)
+            refresh()
+        }
     }
 
     fun onImportRecords(selectedFileContent: String) {
         val chargeListType = object : TypeToken<List<BatteryCharge>>() {}.type
         val fileRecords = Gson().fromJson<List<BatteryCharge>>(selectedFileContent, chargeListType)
         launch {
-            _model.value = UiModel.Progress()
+            _loading.value = true
             chargeRepository.removeAllRecords()
             fileRecords.forEach {
                 it.id = 0
                 chargeRepository.saveCharge(it)
             }
             refresh()
+            _loading.value = false
         }
     }
 }

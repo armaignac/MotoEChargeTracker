@@ -11,12 +11,13 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.anandy.motoechargetracker.*
 import com.anandy.motoechargetracker.databinding.ActivityMainBinding
 import com.anandy.motoechargetracker.model.BatteryCharge
 import com.anandy.motoechargetracker.model.BatteryChargeRepository
-import com.anandy.motoechargetracker.ui.main.MainViewModel.UiModel
+import com.anandy.motoechargetracker.ui.common.EventObserver
 import com.anandy.motoechargetracker.ui.register.RegisterCharge
 import java.io.*
 
@@ -25,21 +26,37 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var viewModel: MainViewModel
-    private val recordsAdapter = BatteryChargeAdapter(::recordsClickListener)
+    private lateinit var recordsAdapter: BatteryChargeAdapter
     private val coarsePermissionRequester = PermissionRequester(this)
     private val chooserRquestCode = 123
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
         viewModel = getViewModel { MainViewModel(BatteryChargeRepository(app)) }
+        viewModel.toastMessage.observe(this, EventObserver { message -> toast(message) })
+        viewModel.navigateToRegister.observe(this, EventObserver { id ->
+            startActivity<RegisterCharge>(RegisterCharge.EXTRA_ID to id)
+        })
+        viewModel.removeCharge.observe(this, EventObserver { charge ->
+            val dialogBuilder = AlertDialog.Builder(this)
+            dialogBuilder.setTitle("Delete")
+            dialogBuilder.setMessage("Do you want to remove the record?")
+            dialogBuilder.setPositiveButton("Yes") { _, _ ->
+                viewModel.onRemoveItem(charge)
+            }
+            dialogBuilder.setNegativeButton("No") { _, _ -> }
+            dialogBuilder.show()
+        })
 
+        recordsAdapter = BatteryChargeAdapter(viewModel::onClickedItemAction)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
         binding.batteryChargeRecycler.adapter = recordsAdapter
-
-        viewModel.model.observe(this, Observer(::updateUi))
 
         binding.fab.setOnClickListener { _ ->
             startActivity<RegisterCharge>()
@@ -98,42 +115,6 @@ class MainActivity : AppCompatActivity() {
                 e.printStackTrace()
             }
         }
-    }
-
-    private fun updateUi(model: UiModel) {
-        binding.progressIndicator.visibility = View.GONE
-        when (model) {
-            is UiModel.Content -> {
-                recordsAdapter.items = model.records
-            }
-            is UiModel.Notify -> toast(model.msg)
-            is UiModel.Progress -> binding.progressIndicator.visibility = View.VISIBLE
-        }
-    }
-
-    private fun recordsClickListener(
-        action: BatteryChargeAdapter.ChargeItemAction,
-        charge: BatteryCharge
-    ) {
-
-        when (action) {
-            BatteryChargeAdapter.ChargeItemAction.REMOVE -> {
-                val dialogBuilder = AlertDialog.Builder(this)
-                dialogBuilder.setTitle("Delete")
-                dialogBuilder.setMessage("Do you want to remove the record?")
-                dialogBuilder.setPositiveButton("Yes") { _, _ ->
-                    viewModel.onClickedItemAction(action, charge)
-                }
-                dialogBuilder.setNegativeButton("No") { _, _ -> }
-                dialogBuilder.show()
-            }
-
-            BatteryChargeAdapter.ChargeItemAction.EDIT -> {
-                Log.d("MotoEChargeTraker", "Selected charge $charge")
-                startActivity<RegisterCharge>(RegisterCharge.EXTRA_ID to charge.id)
-            }
-        }
-
     }
 }
 
