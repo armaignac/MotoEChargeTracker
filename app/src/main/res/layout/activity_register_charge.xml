@@ -1,41 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true"
-    android:orientation="vertical"
-    android:padding="5dp"
-    tools:context=".ui.register.RegisterCharge">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
 
-    <EditText
-        android:id="@+id/textKilometers"
+        <variable
+            name="viewModel"
+            type="com.anandy.motoechargetracker.ui.register.RegisterChargeViewModel" />
+    </data>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Kilometros recorridos"
-        android:inputType="number"
-        android:paddingBottom="10dp" />
-
-    <EditText
-        android:id="@+id/textDateCharge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:clickable="true"
-        android:drawableRight="@android:drawable/ic_menu_my_calendar"
-        android:ems="10"
-        android:focusable="false"
-        android:hint="Fecha de lectura"
-        android:inputType="date"
-        android:paddingBottom="10dp" />
+        android:orientation="vertical"
+        android:padding="5dp"
+        tools:context=".ui.register.RegisterCharge">
 
-    <Switch
-        android:id="@+id/isCharge"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="Carga de batería"
-        tools:checked="true" />
 
-</LinearLayout>
+        <EditText
+            android:id="@+id/textKilometers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Kilometros recorridos"
+            android:inputType="number"
+            android:paddingBottom="10dp"
+            android:text="@{viewModel.kilometers}" />
+
+        <EditText
+            android:id="@+id/textDateCharge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:drawableRight="@android:drawable/ic_menu_my_calendar"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="Fecha de lectura"
+            android:inputType="date"
+            android:paddingBottom="10dp"
+            app:chargeDate="@{viewModel.chargeDate}" />
+
+        <Switch
+            android:id="@+id/isCharge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="Carga de batería"
+            tools:checked="true" />
+
+    </LinearLayout>
+</layout>

@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -28,13 +30,19 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View = LayoutInflater
     .from(context)
     .inflate(layoutRes, this, false)
 
-inline fun <reified T : Activity> Context.startActivity(vararg pairs: Pair<String, Any?>){
-    Intent(this, T :: class.java)
+inline fun <reified T : Activity> Context.startActivity(vararg pairs: Pair<String, Any?>) {
+    Intent(this, T::class.java)
         .apply {
             putExtras(bundleOf(*pairs))
         }
         .also { startActivity(it) }
 }
+
+fun <T : ViewDataBinding> ViewGroup.bindingInflate(
+    @LayoutRes layoutRes: Int,
+    attachToRoot: Boolean = true
+): T =
+    DataBindingUtil.inflate(LayoutInflater.from(context), layoutRes, this, attachToRoot)
 
 inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffUtil(
     initialValue: List<T>,

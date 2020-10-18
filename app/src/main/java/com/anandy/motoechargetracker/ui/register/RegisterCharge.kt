@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.anandy.motoechargetracker.*
@@ -13,8 +14,6 @@ import com.anandy.motoechargetracker.databinding.ActivityRegisterChargeBinding
 import com.anandy.motoechargetracker.model.BatteryCharge
 import com.anandy.motoechargetracker.model.BatteryChargeRepository
 import com.anandy.motoechargetracker.ui.main.MainActivity
-import com.anandy.motoechargetracker.ui.register.RegisterChargeViewModel.UiModel.Navigation
-import com.anandy.motoechargetracker.ui.register.RegisterChargeViewModel.UiModel.UpdateUI
 import kotlinx.android.synthetic.main.activity_register_charge.*
 import kotlinx.coroutines.launch
 
@@ -29,8 +28,6 @@ class RegisterCharge : AppCompatActivity() {
     private lateinit var datePicker: DatePickerFragment
     private lateinit var chargeRepository: BatteryChargeRepository
     private var charge: BatteryCharge? = null
-    private val dateFormat = "dd/MM/yyyy"
-    private val sdf = SimpleDateFormat(dateFormat, Locale.US)
 
     companion object {
         const val EXTRA_ID = "RegisterChargeActivity:id"
@@ -39,38 +36,31 @@ class RegisterCharge : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityRegisterChargeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
         chargeRepository = BatteryChargeRepository(app)
 
+        viewModel = getViewModel { RegisterChargeViewModel(chargeRepository) }
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_register_charge)
+
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         datePicker = DatePickerFragment() { selectedDate ->
-            binding.textDateCharge.setText(sdf.format(selectedDate))
+            viewModel.onDateSelected(selectedDate)
         }
 
         datePicker.selectedDate = Calendar.getInstance().time
-        binding.textDateCharge.setText(sdf.format(datePicker.selectedDate))
+
         binding.textDateCharge.setOnClickListener {
             datePicker.show(supportFragmentManager, "datePicker")
         }
 
-        viewModel = getViewModel { RegisterChargeViewModel(chargeRepository) }
-        viewModel.model.observe(this, Observer(::updateUi))
+        viewModel.chargeDate.observe(this, Observer { date -> datePicker.selectedDate = date })
+        viewModel.charge.observe(this, Observer { modelCharge -> charge = modelCharge })
+        viewModel.navigateToMain.observe(this, Observer { _ -> startActivity<MainActivity>() })
 
         val chargeId = intent.getIntExtra(EXTRA_ID, -1)
         viewModel.onLoadCharge(chargeId)
-    }
-
-    private fun updateUi(model: RegisterChargeViewModel.UiModel) {
-        when (model) {
-            is Navigation -> startActivity<MainActivity>()
-            is UpdateUI -> {
-                charge = model.charge
-                binding.textKilometers.setText(model.charge.kilometers.toString())
-                binding.textDateCharge.setText(sdf.format(model.charge.date))
-                datePicker.selectedDate = model.charge.date
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -81,7 +71,7 @@ class RegisterCharge : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_charge -> {
-                if (binding.textKilometers.text.length > 0 && binding.textKilometers.text.toString().toInt() > 0) {
+                if (binding.textKilometers.text.isNotEmpty() && binding.textKilometers.text.toString().toInt() > 0) {
                     if (charge == null) {
                         charge = BatteryCharge(
                             0,
