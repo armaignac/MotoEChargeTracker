@@ -11,6 +11,7 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -22,21 +23,12 @@ import com.anandy.motoechargetracker.model.BatteryCharge
 import java.util.*
 import kotlin.properties.Delegates
 
-fun Context.toast(message: String) = Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-
-fun RecyclerView.ViewHolder.toast(message: String) = itemView.context.toast(message)
+fun Fragment.toast(message: String) =
+    Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
 
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int): View = LayoutInflater
     .from(context)
     .inflate(layoutRes, this, false)
-
-inline fun <reified T : Activity> Context.startActivity(vararg pairs: Pair<String, Any?>) {
-    Intent(this, T::class.java)
-        .apply {
-            putExtras(bundleOf(*pairs))
-        }
-        .also { startActivity(it) }
-}
 
 fun <T : ViewDataBinding> ViewGroup.bindingInflate(
     @LayoutRes layoutRes: Int,
@@ -64,36 +56,42 @@ inline fun <VH : RecyclerView.ViewHolder, T> RecyclerView.Adapter<VH>.basicDiffU
     }
 
 @Suppress("UNCHECKED_CAST")
-inline fun <reified T : ViewModel> FragmentActivity.getViewModel(crossinline factory: () -> T): T {
+inline fun <reified T : ViewModel> Fragment.getViewModel(crossinline factory: () -> T): T {
 
     val vmFactory = object : ViewModelProvider.Factory {
         override fun <U : ViewModel> create(modelClass: Class<U>): U = factory() as U
     }
+
     return ViewModelProvider(this, vmFactory).get()
 }
 
 val Context.app: BatteryChargeApp
     get() = applicationContext as BatteryChargeApp
 
-fun populateItems() : List<BatteryCharge>{
+val Fragment.app: BatteryChargeApp
+    get() = ((activity?.app)
+        ?: IllegalStateException("Fragment needs to be attach to the activity to access the App instance"))
+            as BatteryChargeApp
+
+fun populateItems(): List<BatteryCharge> {
     return listOf(
         BatteryCharge(0, 37, getDate(19, Calendar.JULY)),
-        BatteryCharge(0,51, getDate(20, Calendar.JULY)),
-        BatteryCharge(0,89, getDate(22, Calendar.JULY)),
-        BatteryCharge(0,126, getDate(23, Calendar.JULY)),
-        BatteryCharge(0,201, getDate(25, Calendar.JULY)),
-        BatteryCharge(0,234, getDate(26, Calendar.JULY)),
-        BatteryCharge(0,264, getDate(27, Calendar.JULY)),
-        BatteryCharge(0,301, getDate(29, Calendar.JULY)),
-        BatteryCharge(0,337, getDate(30, Calendar.JULY)),
-        BatteryCharge(0,378, getDate(31, Calendar.JULY)),
-        BatteryCharge(0,413, getDate(1, Calendar.AUGUST)),
-        BatteryCharge(0,450, getDate(2, Calendar.AUGUST)),
-        BatteryCharge(0,497, getDate(3, Calendar.AUGUST)),
-        BatteryCharge(0,542, getDate(5, Calendar.AUGUST)),
-        BatteryCharge(0,565, getDate(6, Calendar.AUGUST)),
-        BatteryCharge(0,581, getDate(7, Calendar.AUGUST)),
-        BatteryCharge(0,620, getDate(8, Calendar.AUGUST)),
+        BatteryCharge(0, 51, getDate(20, Calendar.JULY)),
+        BatteryCharge(0, 89, getDate(22, Calendar.JULY)),
+        BatteryCharge(0, 126, getDate(23, Calendar.JULY)),
+        BatteryCharge(0, 201, getDate(25, Calendar.JULY)),
+        BatteryCharge(0, 234, getDate(26, Calendar.JULY)),
+        BatteryCharge(0, 264, getDate(27, Calendar.JULY)),
+        BatteryCharge(0, 301, getDate(29, Calendar.JULY)),
+        BatteryCharge(0, 337, getDate(30, Calendar.JULY)),
+        BatteryCharge(0, 378, getDate(31, Calendar.JULY)),
+        BatteryCharge(0, 413, getDate(1, Calendar.AUGUST)),
+        BatteryCharge(0, 450, getDate(2, Calendar.AUGUST)),
+        BatteryCharge(0, 497, getDate(3, Calendar.AUGUST)),
+        BatteryCharge(0, 542, getDate(5, Calendar.AUGUST)),
+        BatteryCharge(0, 565, getDate(6, Calendar.AUGUST)),
+        BatteryCharge(0, 581, getDate(7, Calendar.AUGUST)),
+        BatteryCharge(0, 620, getDate(8, Calendar.AUGUST)),
         BatteryCharge(0,647, getDate(10, Calendar.AUGUST)),
         BatteryCharge(0,693, getDate(11, Calendar.AUGUST)),
         BatteryCharge(0,740, getDate(12, Calendar.AUGUST)),

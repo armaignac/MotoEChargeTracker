@@ -14,7 +14,7 @@ class BatteryChargeRepository(application: BatteryChargeApp) {
 
         with(db.batteryChargeDao()){
             if(getRecordsCount() == 0){
-               // populateItems().forEach { this.saveCharge(it) }
+               //populateItems().forEach { this.saveCharge(it) }
             }
             getRecords()
         }
@@ -25,10 +25,10 @@ class BatteryChargeRepository(application: BatteryChargeApp) {
 
             val calendar = Calendar.getInstance()
             calendar.time = charge.date
-            calendar.set(Calendar.HOUR_OF_DAY, 0);
-            calendar.set(Calendar.MINUTE, 0);
-            calendar.set(Calendar.SECOND, 0);
-            calendar.set(Calendar.MILLISECOND, 0);
+            calendar.set(Calendar.HOUR_OF_DAY, 0)
+            calendar.set(Calendar.MINUTE, 0)
+            calendar.set(Calendar.SECOND, 0)
+            calendar.set(Calendar.MILLISECOND, 0)
 
             charge.date = calendar.time
             if (charge.id == 0) {

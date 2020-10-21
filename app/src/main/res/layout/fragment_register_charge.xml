@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="viewModel"
             type="com.anandy.motoechargetracker.ui.register.RegisterChargeViewModel" />
@@ -16,7 +15,7 @@
         android:clickable="true"
         android:orientation="vertical"
         android:padding="5dp"
-        tools:context=".ui.register.RegisterCharge">
+        tools:context=".ui.register.RegisterChargeFragment">
 
 
         <EditText

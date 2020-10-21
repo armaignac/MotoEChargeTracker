@@ -31,14 +31,15 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Sco
     private val _loading = MutableLiveData<Boolean>()
     val loading: LiveData<Boolean> get() = _loading
 
+
     init {
         initScope()
         refresh()
     }
-
     private fun refresh() {
         launch {
             _items.value = chargeRepository.getRecords()
+            Log.d("MotoE", "Items size ${_items.value!!.size}")
         }
     }
 
