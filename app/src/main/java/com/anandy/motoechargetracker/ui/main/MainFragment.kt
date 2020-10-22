@@ -76,20 +76,14 @@ class MainFragment : Fragment() {
                 dialogBuilder.setNegativeButton("No") { _, _ -> }
                 dialogBuilder.show()
             })
-
-            items.observe(viewLifecycleOwner, Observer { value ->
-                Log.d("MotoE", "Items observer size ${value}")
-                //recordsAdapter.items = value
-            })
         }
 
         recordsAdapter = BatteryChargeAdapter(mainViewModel::onClickedItemAction)
-        batteryChargeRecycler.adapter = recordsAdapter
 
-        Log.d("MotoE", "ViewModel value ${mainViewModel}")
         binding.apply {
             viewModel = mainViewModel
             lifecycleOwner = this@MainFragment
+            batteryChargeRecycler.adapter = recordsAdapter
 
             fab.setOnClickListener { _ ->
                 val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment()

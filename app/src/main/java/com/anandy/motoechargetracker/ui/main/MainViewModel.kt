@@ -39,7 +39,6 @@ class MainViewModel(private val chargeRepository: BatteryChargeRepository) : Sco
     private fun refresh() {
         launch {
             _items.value = chargeRepository.getRecords()
-            Log.d("MotoE", "Items size ${_items.value!!.size}")
         }
     }
 
