@@ -68,9 +68,9 @@ class MainFragment : Fragment() {
             })
             removeCharge.observe(viewLifecycleOwner, EventObserver { charge ->
                 val dialogBuilder = AlertDialog.Builder(this@MainFragment.context)
-                dialogBuilder.setTitle("Delete")
-                dialogBuilder.setMessage("Do you want to remove the record?")
-                dialogBuilder.setPositiveButton("Yes") { _, _ ->
+                dialogBuilder.setTitle("Eliminar")
+                dialogBuilder.setMessage("¿Desea eliminar el registro ${charge.kilometers}?")
+                dialogBuilder.setPositiveButton("Si") { _, _ ->
                     mainViewModel.onRemoveItem(charge)
                 }
                 dialogBuilder.setNegativeButton("No") { _, _ -> }
