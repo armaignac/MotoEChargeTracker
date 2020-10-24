@@ -4,6 +4,9 @@
     <bytecodeTargetLevel>
       <module name="Battery_Charge_Tracker.app" target="1.8" />
       <module name="MotoE_Charge_Tracker.app" target="1.8" />
+      <module name="MotoE_Charge_Tracker.data" target="1.7" />
+      <module name="MotoE_Charge_Tracker.domain" target="1.7" />
+      <module name="MotoE_Charge_Tracker.usecases" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
