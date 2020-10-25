@@ -10,11 +10,14 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.anandy.motoechargetracker.*
+import com.anandy.motoechargetracker.data.repository.BatteryChargeRepository
+import com.anandy.motoechargetracker.database.RoomDataSource
 import com.anandy.motoechargetracker.ui.common.DatePickerFragment
 import com.anandy.motoechargetracker.databinding.FragmentRegisterChargeBinding
-import com.anandy.motoechargetracker.model.BatteryCharge
-import com.anandy.motoechargetracker.model.BatteryChargeRepository
+import com.anandy.motoechargetracker.domain.BatteryCharge
 import com.anandy.motoechargetracker.ui.common.EventObserver
+import com.anandy.motoechargetracker.usecases.FindCharge
+import com.anandy.motoechargetracker.usecases.SaveCharge
 
 import java.util.*
 
@@ -24,7 +27,6 @@ class RegisterChargeFragment : Fragment() {
     private lateinit var binding: FragmentRegisterChargeBinding
     private lateinit var registerChargeViewModel: RegisterChargeViewModel
     private lateinit var datePicker: DatePickerFragment
-    private lateinit var chargeRepository: BatteryChargeRepository
     private var charge: BatteryCharge? = null
     private val args: RegisterChargeFragmentArgs by navArgs()
     private lateinit var navController: NavController
@@ -50,9 +52,14 @@ class RegisterChargeFragment : Fragment() {
 
         (activity as AppCompatActivity).setTitle(R.string.title_activity_register_charge)
 
-        chargeRepository = BatteryChargeRepository(app)
-
-        registerChargeViewModel = getViewModel { RegisterChargeViewModel(chargeRepository) }
+        registerChargeViewModel = getViewModel {
+            RegisterChargeViewModel(
+                SaveCharge(
+                    BatteryChargeRepository(RoomDataSource(app.db))
+                ),
+                FindCharge(BatteryChargeRepository(RoomDataSource(app.db)))
+            )
+        }
 
         datePicker = DatePickerFragment() { selectedDate ->
             registerChargeViewModel.onDateSelected(selectedDate)
@@ -92,7 +99,9 @@ class RegisterChargeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_charge -> {
-                if (binding.textKilometers.text.isNotEmpty() && binding.textKilometers.text.toString().toInt() > 0) {
+                if (binding.textKilometers.text.isNotEmpty() && binding.textKilometers.text.toString()
+                        .toInt() > 0
+                ) {
                     if (charge == null) {
                         charge = BatteryCharge(
                             0,

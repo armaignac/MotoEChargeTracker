@@ -1,7 +1,6 @@
 package com.anandy.motoechargetracker.database
 
 import androidx.room.*
-import com.anandy.motoechargetracker.model.BatteryCharge
 
 @Dao
 interface BatteryChargeDao {
@@ -21,8 +20,8 @@ interface BatteryChargeDao {
     @Update
     fun updateCharge(charge: BatteryCharge)
 
-    @Query("DELETE FROM BatteryCharge WHERE id = :id")
-    fun remove(id: Int): Int
+    @Query("DELETE FROM BatteryCharge WHERE id = :chargeId")
+    fun remove(chargeId: Int)
 
     @Query("DELETE FROM BatteryCharge")
     fun removeAllRecords()

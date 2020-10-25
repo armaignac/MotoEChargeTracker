@@ -1,4 +1,4 @@
-package com.anandy.motoechargetracker.model
+package com.anandy.motoechargetracker.database
 
 import androidx.room.TypeConverter
 import java.util.*

@@ -7,19 +7,20 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.anandy.motoechargetracker.*
+import com.anandy.motoechargetracker.data.repository.BatteryChargeRepository
+import com.anandy.motoechargetracker.database.RoomDataSource
 import com.anandy.motoechargetracker.databinding.FragmentMainBinding
-import com.anandy.motoechargetracker.model.BatteryChargeRepository
 import com.anandy.motoechargetracker.ui.common.EventObserver
-import kotlinx.android.synthetic.main.fragment_main.*
+import com.anandy.motoechargetracker.usecases.GetRegisteredCharges
+import com.anandy.motoechargetracker.usecases.ImportCharges
+import com.anandy.motoechargetracker.usecases.RemoveCharge
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -29,7 +30,13 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private val mainViewModel: MainViewModel by lazy {
-        getViewModel { MainViewModel(BatteryChargeRepository(app)) }
+        getViewModel {
+            MainViewModel(
+                GetRegisteredCharges(BatteryChargeRepository(RoomDataSource(app.db))),
+                RemoveCharge(BatteryChargeRepository(RoomDataSource(app.db))),
+                ImportCharges(BatteryChargeRepository(RoomDataSource(app.db)))
+            )
+        }
     }
     private lateinit var recordsAdapter: BatteryChargeAdapter
     private val coarsePermissionRequester by lazy {
@@ -66,7 +73,7 @@ class MainFragment : Fragment() {
                 val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment(id)
                 navController.navigate(action)
             })
-            removeCharge.observe(viewLifecycleOwner, EventObserver { charge ->
+            deleteCharge.observe(viewLifecycleOwner, EventObserver { charge ->
                 val dialogBuilder = AlertDialog.Builder(this@MainFragment.context)
                 dialogBuilder.setTitle("Eliminar")
                 dialogBuilder.setMessage("¿Desea eliminar el registro ${charge.kilometers}?")

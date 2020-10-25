@@ -2,14 +2,18 @@ package com.anandy.motoechargetracker.ui.register
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.anandy.motoechargetracker.model.BatteryCharge
-import com.anandy.motoechargetracker.model.BatteryChargeRepository
+import com.anandy.motoechargetracker.domain.BatteryCharge
 import com.anandy.motoechargetracker.ui.common.Event
 import com.anandy.motoechargetracker.ui.common.ScopedViewModel
+import com.anandy.motoechargetracker.usecases.FindCharge
+import com.anandy.motoechargetracker.usecases.SaveCharge
 import kotlinx.coroutines.launch
 import java.util.*
 
-class RegisterChargeViewModel(private val chargeRepository: BatteryChargeRepository) :
+class RegisterChargeViewModel(
+    private val saveCharge: SaveCharge,
+    private val findCharge: FindCharge
+) :
     ScopedViewModel() {
     private val _kilometers = MutableLiveData<String>()
     val kilometers: LiveData<String>
@@ -38,14 +42,14 @@ class RegisterChargeViewModel(private val chargeRepository: BatteryChargeReposit
 
     fun onSave(charge: BatteryCharge) {
         launch {
-            chargeRepository.saveCharge(charge)
+            saveCharge.invoke(charge)
             _navigateToMain.value = Event(charge.id)
         }
     }
 
     fun onLoadCharge(chargeId: Int) {
         launch {
-            val charge = chargeRepository.getCharge(chargeId)
+            val charge = findCharge.invoke(chargeId)
             if (charge != null) {
                 _kilometers.value = charge.kilometers.toString()
                 _chargeDate.value = charge.date

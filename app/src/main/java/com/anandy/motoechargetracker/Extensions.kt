@@ -18,7 +18,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.anandy.motoechargetracker.model.BatteryCharge
+import com.anandy.motoechargetracker.domain.BatteryCharge
 
 import java.util.*
 import kotlin.properties.Delegates

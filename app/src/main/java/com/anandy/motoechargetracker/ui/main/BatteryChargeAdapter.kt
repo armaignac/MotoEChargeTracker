@@ -2,13 +2,12 @@ package com.anandy.motoechargetracker.ui.main
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.anandy.motoechargetracker.R
 import com.anandy.motoechargetracker.basicDiffUtil
 import com.anandy.motoechargetracker.databinding.BatteryChargeRecordBinding
+import com.anandy.motoechargetracker.domain.BatteryCharge
 import com.anandy.motoechargetracker.inflate
-import com.anandy.motoechargetracker.model.BatteryCharge
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
