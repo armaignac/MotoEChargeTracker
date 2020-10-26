@@ -25,7 +25,8 @@ import java.util.*
 class RegisterChargeFragment : Fragment() {
 
     private lateinit var binding: FragmentRegisterChargeBinding
-    private lateinit var registerChargeViewModel: RegisterChargeViewModel
+    private lateinit var component: RegisterChargeFragmentComponent
+    private val registerChargeViewModel by lazy { getViewModel { component.registerChargeViewModel } }
     private lateinit var datePicker: DatePickerFragment
     private var charge: BatteryCharge? = null
     private val args: RegisterChargeFragmentArgs by navArgs()
@@ -52,14 +53,7 @@ class RegisterChargeFragment : Fragment() {
 
         (activity as AppCompatActivity).setTitle(R.string.title_activity_register_charge)
 
-        registerChargeViewModel = getViewModel {
-            RegisterChargeViewModel(
-                SaveCharge(
-                    BatteryChargeRepository(RoomDataSource(app.db))
-                ),
-                FindCharge(BatteryChargeRepository(RoomDataSource(app.db)))
-            )
-        }
+        component = app.component.plus(RegisterChargeFragmentModule())
 
         datePicker = DatePickerFragment() { selectedDate ->
             registerChargeViewModel.onDateSelected(selectedDate)

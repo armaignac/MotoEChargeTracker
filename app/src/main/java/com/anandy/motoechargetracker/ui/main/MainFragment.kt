@@ -18,6 +18,8 @@ import com.anandy.motoechargetracker.data.repository.BatteryChargeRepository
 import com.anandy.motoechargetracker.database.RoomDataSource
 import com.anandy.motoechargetracker.databinding.FragmentMainBinding
 import com.anandy.motoechargetracker.ui.common.EventObserver
+import com.anandy.motoechargetracker.ui.register.RegisterChargeFragmentComponent
+import com.anandy.motoechargetracker.ui.register.RegisterChargeFragmentModule
 import com.anandy.motoechargetracker.usecases.GetRegisteredCharges
 import com.anandy.motoechargetracker.usecases.ImportCharges
 import com.anandy.motoechargetracker.usecases.RemoveCharge
@@ -29,13 +31,10 @@ import java.io.InputStreamReader
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private lateinit var component: MainFragmentComponent
     private val mainViewModel: MainViewModel by lazy {
         getViewModel {
-            MainViewModel(
-                GetRegisteredCharges(BatteryChargeRepository(RoomDataSource(app.db))),
-                RemoveCharge(BatteryChargeRepository(RoomDataSource(app.db))),
-                ImportCharges(BatteryChargeRepository(RoomDataSource(app.db)))
-            )
+            component.mainViewModel
         }
     }
     private lateinit var recordsAdapter: BatteryChargeAdapter
@@ -66,6 +65,8 @@ class MainFragment : Fragment() {
         navController = findNavController()
 
         (activity as AppCompatActivity).setTitle(R.string.title_activity_main)
+
+        component = app.component.plus(MainFragmentModule())
 
         with(mainViewModel) {
             toastMessage.observe(viewLifecycleOwner, EventObserver { message -> toast(message) })
