@@ -9,6 +9,8 @@ data class BatteryCharge(
     @PrimaryKey(autoGenerate = true)
     var id: Int,
     var kilometers: Int,
-    var date: Date
+    var chargeDate: Date,
+    var resetId: Int
 ) {
+
 }

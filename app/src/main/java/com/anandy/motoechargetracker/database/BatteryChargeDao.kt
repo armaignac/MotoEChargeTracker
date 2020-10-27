@@ -1,11 +1,13 @@
 package com.anandy.motoechargetracker.database
 
+import android.database.Cursor
 import androidx.room.*
+import java.util.*
 
 @Dao
 interface BatteryChargeDao {
 
-    @Query("SELECT * FROM BatteryCharge ORDER BY date DESC")
+    @Query("SELECT * FROM BatteryCharge ORDER BY date(chargeDate) DESC")
     fun getRecords(): List<BatteryCharge>
 
     @Query("SELECT COUNT(id) FROM BatteryCharge")
@@ -26,5 +28,6 @@ interface BatteryChargeDao {
     @Query("DELETE FROM BatteryCharge")
     fun removeAllRecords()
 
-
+    @Query("SELECT max(resetId) from BatteryCharge")
+    fun getCurrentResetId(): Int
 }

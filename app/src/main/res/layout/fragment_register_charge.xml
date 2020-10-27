@@ -12,7 +12,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:clickable="true"
         android:orientation="vertical"
         android:padding="5dp"
         tools:context=".ui.register.RegisterChargeFragment">
@@ -23,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Kilometros recorridos"
+            android:hint="@string/kilometros_recorridos"
             android:inputType="number"
             android:paddingBottom="10dp"
             android:text="@{viewModel.kilometers}" />
@@ -34,20 +33,21 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:drawableRight="@android:drawable/ic_menu_my_calendar"
+            android:drawableEnd="@android:drawable/ic_menu_my_calendar"
             android:ems="10"
-            android:focusable="false"
-            android:hint="Fecha de lectura"
+            android:focusable="true"
+            android:hint="@string/date"
             android:inputType="date"
             android:paddingBottom="10dp"
             app:chargeDate="@{viewModel.chargeDate}" />
 
-        <Switch
-            android:id="@+id/isCharge"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/isResetCharge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Carga de batería"
-            tools:checked="true" />
+            android:checked="false"
+            android:text="@string/reset_km"
+            tools:checked="false" />
 
     </LinearLayout>
 </layout>

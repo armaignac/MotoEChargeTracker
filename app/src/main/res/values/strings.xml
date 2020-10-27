@@ -14,4 +14,7 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_main_nav_host">MainNavHostActivity</string>
+    <string name="kilometros_recorridos">Kilometros recorridos</string>
+    <string name="date">Fecha</string>
+    <string name="reset_km">Reiniciar kilometros recorridos</string>
 </resources>

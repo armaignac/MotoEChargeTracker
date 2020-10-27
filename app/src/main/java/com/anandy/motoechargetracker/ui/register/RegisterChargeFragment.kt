@@ -106,6 +106,7 @@ class RegisterChargeFragment : Fragment() {
                         charge?.kilometers = binding.textKilometers.text.toString().toInt()
                         charge?.date = datePicker.selectedDate
                     }
+                    charge?.resetCharge = binding.isResetCharge.isChecked
                     registerChargeViewModel.onSave(charge!!)
                 } else {
                     toast("Los kilometros deben ser mayor que 0")
