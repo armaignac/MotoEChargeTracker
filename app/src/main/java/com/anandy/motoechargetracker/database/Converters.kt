@@ -5,16 +5,19 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class Converters {
-    private val format = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+
+    companion object {
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+    }
 
     @TypeConverter
     fun toDate(strDate: String): Date {
-        return format.parse(strDate)!!
+        return dateFormat.parse(strDate)!!
     }
 
     @TypeConverter
     fun fromDate(date: Date): String {
 
-        return format.format(date)
+        return dateFormat.format(date)
     }
 }
