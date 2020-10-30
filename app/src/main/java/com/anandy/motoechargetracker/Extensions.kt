@@ -3,6 +3,8 @@ package com.anandy.motoechargetracker
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.anandy.motoechargetracker.database.Converters
 import com.anandy.motoechargetracker.domain.BatteryCharge
 
 import java.util.*
@@ -73,6 +76,6 @@ val Fragment.app: BatteryChargeApp
         ?: IllegalStateException("Fragment needs to be attach to the activity to access the App instance"))
             as BatteryChargeApp
 
-
+fun Date.toChargeDate(): String = Converters.dateFormat.format(this)
 
 
