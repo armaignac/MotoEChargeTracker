@@ -3,6 +3,7 @@ package com.anandy.motoechargetracker.ui.main
 import com.anandy.motoechargetracker.app
 import com.anandy.motoechargetracker.data.repository.BatteryChargeRepository
 import com.anandy.motoechargetracker.database.RoomDataSource
+import com.anandy.motoechargetracker.usecases.GetMonthlyCharges
 import com.anandy.motoechargetracker.usecases.GetRegisteredCharges
 import com.anandy.motoechargetracker.usecases.ImportCharges
 import com.anandy.motoechargetracker.usecases.RemoveCharge
@@ -15,12 +16,17 @@ class MainFragmentModule {
 
     @Provides
     fun mainViewModelProvider(
+        getMonthlyCharges: GetMonthlyCharges,
         getRegisteredCharges: GetRegisteredCharges,
         removeCharge: RemoveCharge,
         importCharges: ImportCharges
     ) = MainViewModel(
-        getRegisteredCharges, removeCharge, importCharges
+        getMonthlyCharges, getRegisteredCharges, removeCharge, importCharges
     )
+
+    @Provides
+    fun getMonthlyChargesProvider(batteryChargeRepository: BatteryChargeRepository) =
+        GetMonthlyCharges(batteryChargeRepository)
 
     @Provides
     fun getRegisteredChargesProvider(batteryChargeRepository: BatteryChargeRepository) =

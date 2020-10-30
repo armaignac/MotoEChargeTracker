@@ -13,16 +13,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.anandy.motoechargetracker.*
-import com.anandy.motoechargetracker.data.repository.BatteryChargeRepository
-import com.anandy.motoechargetracker.database.RoomDataSource
 import com.anandy.motoechargetracker.databinding.FragmentMainBinding
 import com.anandy.motoechargetracker.ui.common.EventObserver
-import com.anandy.motoechargetracker.ui.register.RegisterChargeFragmentComponent
-import com.anandy.motoechargetracker.ui.register.RegisterChargeFragmentModule
-import com.anandy.motoechargetracker.usecases.GetRegisteredCharges
-import com.anandy.motoechargetracker.usecases.ImportCharges
-import com.anandy.motoechargetracker.usecases.RemoveCharge
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
@@ -80,18 +74,21 @@ class MainFragment : Fragment() {
                 dialogBuilder.setMessage("¿Desea eliminar el registro ${charge.kilometers}?")
                 dialogBuilder.setPositiveButton("Si") { _, _ ->
                     mainViewModel.onRemoveItem(charge)
+                    recordsAdapter.notifyChildRemoved(charge)
                 }
                 dialogBuilder.setNegativeButton("No") { _, _ -> }
                 dialogBuilder.show()
             })
+
         }
 
-        recordsAdapter = BatteryChargeAdapter(mainViewModel::onClickedItemAction)
+        recordsAdapter = BatteryChargeAdapter(mainViewModel, mainViewModel::onClickedItemAction)
 
         binding.apply {
             viewModel = mainViewModel
             lifecycleOwner = this@MainFragment
             batteryChargeRecycler.adapter = recordsAdapter
+            batteryChargeRecycler.layoutManager = LinearLayoutManager(context)
 
             fab.setOnClickListener { _ ->
                 val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment()

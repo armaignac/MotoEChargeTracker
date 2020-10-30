@@ -17,4 +17,6 @@
     <string name="kilometros_recorridos">Kilometros recorridos</string>
     <string name="date">Fecha</string>
     <string name="reset_km">Reiniciar kilometros recorridos</string>
+    <string name="arrow_indicator">Arrow indicator</string>
+    <string name="add_charges">Add Charges</string>
 </resources>

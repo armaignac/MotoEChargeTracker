@@ -1,10 +1,11 @@
 package com.anandy.motoechargetracker.database
 
-import android.util.Log
 import com.anandy.motoechargetracker.data.source.LocalDataSource
+import com.anandy.motoechargetracker.domain.MonthlyCharge
 import com.anandy.motoechargetracker.domain.BatteryCharge as DomainCharge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.*
 
 class RoomDataSource(db: BatteryChargeDatabase) : LocalDataSource {
 
@@ -16,9 +17,9 @@ class RoomDataSource(db: BatteryChargeDatabase) : LocalDataSource {
     override suspend fun getRecord(chargeId: Int): DomainCharge? =
         withContext(Dispatchers.IO) { batteryDao.getCharge(chargeId)?.toDomainCharge() }
 
-    override suspend fun getRecords(): List<DomainCharge> =
+    override suspend fun getRecords(startDate: String, endDate: String): List<DomainCharge> =
         withContext(Dispatchers.IO) {
-            batteryDao.getRecords().map { it.toDomainCharge() }
+            batteryDao.getRecords(startDate, endDate).map { it.toDomainCharge() }
         }
 
     override suspend fun saveCharge(charge: DomainCharge) =
@@ -32,6 +33,9 @@ class RoomDataSource(db: BatteryChargeDatabase) : LocalDataSource {
 
     override suspend fun removeAllRecords() =
         withContext(Dispatchers.IO) { batteryDao.removeAllRecords() }
+
+    override suspend fun getMonthlyCharges(): List<MonthlyCharge> =
+        withContext(Dispatchers.IO) { batteryDao.getMonthlyCharges() }
 
     private fun setResetChargeIdentifier(charge: DomainCharge): BatteryCharge {
         var resetId = batteryDao.getCurrentResetId()

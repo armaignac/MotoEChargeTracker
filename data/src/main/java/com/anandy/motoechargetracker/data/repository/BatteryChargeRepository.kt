@@ -2,15 +2,16 @@ package com.anandy.motoechargetracker.data.repository
 
 import com.anandy.motoechargetracker.data.source.LocalDataSource
 import com.anandy.motoechargetracker.domain.BatteryCharge
+import com.anandy.motoechargetracker.domain.MonthlyCharge
 import java.util.*
 
 class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
 
-    suspend fun getRecords(): List<BatteryCharge> {
+    suspend fun getRecords(startDate: String, endDate: String): List<BatteryCharge> {
         if (localDataSource.isEmpty()) {
             populateItems().forEach { this.saveCharge(it) }
         }
-        return localDataSource.getRecords()
+        return localDataSource.getRecords(startDate, endDate)
     }
 
     suspend fun saveCharge(charge: BatteryCharge) {
@@ -21,6 +22,7 @@ class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
         }
     }
 
+    suspend fun getMonthlyRecords() = localDataSource.getMonthlyCharges()
     suspend fun remove(charge: BatteryCharge) = localDataSource.remove(charge.id)
     suspend fun getCharge(chargeId: Int): BatteryCharge? = localDataSource.getRecord(chargeId)
     suspend fun removeAllRecords() = localDataSource.removeAllRecords()

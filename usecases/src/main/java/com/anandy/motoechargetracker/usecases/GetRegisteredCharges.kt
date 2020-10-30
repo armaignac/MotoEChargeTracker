@@ -4,5 +4,6 @@ import com.anandy.motoechargetracker.data.repository.BatteryChargeRepository
 
 class GetRegisteredCharges(private val batteryChargeRepository: BatteryChargeRepository) {
 
-    suspend fun invoke() = batteryChargeRepository.getRecords()
+    suspend fun invoke(startDate: String, endDate: String) =
+        batteryChargeRepository.getRecords(startDate, endDate)
 }

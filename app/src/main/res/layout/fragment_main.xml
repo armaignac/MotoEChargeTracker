@@ -20,7 +20,7 @@
             android:layout_height="match_parent"
             android:padding="2dp"
             android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:spanCount="1"
             app:items="@{viewModel.items}"
             tools:listitem="@layout/battery_charge_record" />
@@ -31,7 +31,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            android:src="@android:drawable/ic_input_add" />
+            android:src="@android:drawable/ic_input_add"
+            android:contentDescription="@string/add_charges" />
 
         <ProgressBar
             android:id="@+id/progressIndicator"

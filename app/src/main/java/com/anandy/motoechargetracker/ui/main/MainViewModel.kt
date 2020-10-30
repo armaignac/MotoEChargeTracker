@@ -4,8 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.anandy.motoechargetracker.domain.BatteryCharge
+import com.anandy.motoechargetracker.domain.MonthlyCharge
+import com.anandy.motoechargetracker.toChargeDate
+import com.anandy.motoechargetracker.ui.common.AsyncItemLoad
 import com.anandy.motoechargetracker.ui.common.Event
 import com.anandy.motoechargetracker.ui.common.ScopedViewModel
+import com.anandy.motoechargetracker.usecases.GetMonthlyCharges
 import com.anandy.motoechargetracker.usecases.GetRegisteredCharges
 import com.anandy.motoechargetracker.usecases.ImportCharges
 import com.anandy.motoechargetracker.usecases.RemoveCharge
@@ -16,13 +20,15 @@ import java.io.File
 import java.util.*
 
 class MainViewModel(
+    private val monthlyCharges: GetMonthlyCharges,
     private val registeredCharges: GetRegisteredCharges,
     private val removeCharge: RemoveCharge,
     private val importCharges: ImportCharges
-) : ScopedViewModel() {
+) : ScopedViewModel(),
+    AsyncItemLoad<MonthlyCharge, BatteryCharge> {
 
-    private val _items = MutableLiveData<List<BatteryCharge>>()
-    val items: LiveData<List<BatteryCharge>> get() = _items
+    private val _items = MutableLiveData<List<MonthlyCharge>>()
+    val items: LiveData<List<MonthlyCharge>> get() = _items
 
     private val _navigateToRegister = MutableLiveData<Event<Int>>()
     val navigateToRegister: LiveData<Event<Int>> get() = _navigateToRegister
@@ -44,7 +50,7 @@ class MainViewModel(
 
     private fun refresh() {
         launch {
-            _items.value = registeredCharges.invoke()
+            _items.value = monthlyCharges.invoke()
         }
     }
 
@@ -60,7 +66,7 @@ class MainViewModel(
 
     fun onExportRecords(exportFolder: String) {
         launch {
-            val records = registeredCharges.invoke()
+            val records = registeredCharges.invoke("", "")
             val jsonString = Gson().toJson(records)
             val currentDate = Calendar.getInstance()
             val dateName =
@@ -82,7 +88,6 @@ class MainViewModel(
     fun onRemoveItem(charge: BatteryCharge) {
         launch {
             removeCharge.invoke(charge)
-            refresh()
         }
     }
 
@@ -95,5 +100,30 @@ class MainViewModel(
             refresh()
             _loading.value = false
         }
+    }
+
+    override suspend fun onLoadChildRecords(parent: MonthlyCharge): List<BatteryCharge> {
+        val monthDate = parent.monthDate.split("-")
+        val month = monthDate[0].toInt() - 1
+        val year = monthDate[1].toInt()
+
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.YEAR, year)
+
+        val startDate = calendar.time.toChargeDate()
+
+        calendar.set(
+            Calendar.DAY_OF_MONTH,
+            Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
+        )
+        val endDate = calendar.time.toChargeDate()
+
+        Log.d(
+            "MotoE",
+            "Loading charge records from $startDate to $endDate from month range $monthDate"
+        )
+        return registeredCharges.invoke(startDate, endDate)
     }
 }
