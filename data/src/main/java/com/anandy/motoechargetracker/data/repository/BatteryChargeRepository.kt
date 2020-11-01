@@ -7,12 +7,8 @@ import java.util.*
 
 class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
 
-    suspend fun getRecords(startDate: String, endDate: String): List<BatteryCharge> {
-        if (localDataSource.isEmpty()) {
-            populateItems().forEach { this.saveCharge(it) }
-        }
-        return localDataSource.getRecords(startDate, endDate)
-    }
+    suspend fun getRecords(startDate: String, endDate: String) =
+        localDataSource.getRecords(startDate, endDate)
 
     suspend fun saveCharge(charge: BatteryCharge) {
         if (charge.id == 0) {
@@ -22,7 +18,13 @@ class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
         }
     }
 
-    suspend fun getMonthlyRecords() = localDataSource.getMonthlyCharges()
+    suspend fun getMonthlyRecords(): List<MonthlyCharge> {
+        if (localDataSource.isEmpty()) {
+            populateItems().forEach { this.saveCharge(it) }
+        }
+        return localDataSource.getMonthlyCharges()
+    }
+
     suspend fun remove(charge: BatteryCharge) = localDataSource.remove(charge.id)
     suspend fun getCharge(chargeId: Int): BatteryCharge? = localDataSource.getRecord(chargeId)
     suspend fun removeAllRecords() = localDataSource.removeAllRecords()
