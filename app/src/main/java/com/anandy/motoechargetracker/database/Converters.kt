@@ -7,7 +7,7 @@ import java.util.*
 class Converters {
 
     companion object {
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US)
     }
 
     @TypeConverter

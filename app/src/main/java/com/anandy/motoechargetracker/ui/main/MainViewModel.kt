@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.anandy.motoechargetracker.domain.BatteryCharge
 import com.anandy.motoechargetracker.domain.MonthlyCharge
+import com.anandy.motoechargetracker.endDate
 import com.anandy.motoechargetracker.toChargeDate
+import com.anandy.motoechargetracker.startDate
 import com.anandy.motoechargetracker.ui.common.AsyncItemLoad
 import com.anandy.motoechargetracker.ui.common.Event
 import com.anandy.motoechargetracker.ui.common.ScopedViewModel
@@ -112,13 +114,13 @@ class MainViewModel(
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.YEAR, year)
 
-        val startDate = calendar.time.toChargeDate()
+        val startDate = calendar.time.startDate().toChargeDate()
 
         calendar.set(
             Calendar.DAY_OF_MONTH,
-            Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
+            calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         )
-        val endDate = calendar.time.toChargeDate()
+        val endDate = calendar.time.endDate().toChargeDate()
 
         Log.d(
             "MotoE",

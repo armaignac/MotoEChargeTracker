@@ -78,4 +78,30 @@ val Fragment.app: BatteryChargeApp
 
 fun Date.toChargeDate(): String = Converters.dateFormat.format(this)
 
+fun Date.startDate(): Date {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+
+    calendar.apply {
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }
+    return calendar.time
+}
+
+fun Date.endDate(): Date {
+    val calendar = Calendar.getInstance()
+    calendar.time = this
+
+    calendar.apply {
+        set(Calendar.HOUR_OF_DAY, 23)
+        set(Calendar.MINUTE, 59)
+        set(Calendar.SECOND, 59)
+        set(Calendar.MILLISECOND, 999)
+    }
+    return calendar.time
+}
+
 
