@@ -7,7 +7,15 @@ import java.util.*
 @Dao
 interface BatteryChargeDao {
 
-    @Query("SELECT * FROM BatteryCharge WHERE date(chargeDate) >= date(:startDate) and date(chargeDate) <= date(:endDate) ORDER BY date(chargeDate)")
+    @Query(
+        "SELECT * FROM BatteryCharge " +
+                "WHERE case when (:startDate = '') " +
+                "      then 1 = 1 " +
+                "      else (date(chargeDate) >= date(:startDate) " +
+                "        and date(chargeDate) <= date(:endDate))" +
+                "      end " +
+                "ORDER BY date(chargeDate) DESC"
+    )
     fun getRecords(startDate: String, endDate: String): List<BatteryCharge>
 
     @Query("SELECT COUNT(id) FROM BatteryCharge")
@@ -31,6 +39,15 @@ interface BatteryChargeDao {
     @Query("SELECT max(resetId) from BatteryCharge")
     fun getCurrentResetId(): Int
 
-    @Query("SELECT strftime('%m-%Y', chargeDate) as monthDate, case when (max(kilometers) = min(kilometers)) then max(kilometers) else max(kilometers) - min(kilometers) end as totalKilometers, count(id) as totalCharges FROM BatteryCharge GROUP BY strftime('%m-%Y', chargeDate) ORDER BY strftime('%m-%Y', chargeDate) DESC")
+    @Query(
+        "SELECT strftime('%m-%Y', chargeDate) as monthDate, " +
+                "case when (max(kilometers) = min(kilometers)) " +
+                "  then max(kilometers) " +
+                "  else max(kilometers) - min(kilometers) " +
+                "end as totalKilometers, count(id) as totalCharges " +
+                "FROM BatteryCharge " +
+                "GROUP BY strftime('%m-%Y', chargeDate) " +
+                "ORDER BY strftime('%m-%Y', chargeDate) DESC"
+    )
     fun getMonthlyCharges(): List<MonthlyCharge>
 }
