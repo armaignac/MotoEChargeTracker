@@ -72,10 +72,10 @@ class MainViewModel(
             val jsonString = Gson().toJson(records)
             val currentDate = Calendar.getInstance()
             val dateName =
-                "${currentDate.get(Calendar.YEAR)}-${currentDate.get(Calendar.MONTH)}-${
-                    currentDate.get(
-                        Calendar.DAY_OF_MONTH
-                    )
+                "${currentDate.get(Calendar.YEAR)}-${currentDate.get(Calendar.MONTH) + 1}-${
+                currentDate.get(
+                    Calendar.DAY_OF_MONTH
+                )
                 }"
             val timeName =
                 "${currentDate.get(Calendar.HOUR_OF_DAY)}-${currentDate.get(Calendar.MINUTE)}"
