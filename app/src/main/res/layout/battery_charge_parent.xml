@@ -13,47 +13,68 @@
     app:cardCornerRadius="0dp"
     app:cardElevation="4dp">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/charges"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true"
-            android:ellipsize="end"
-            android:gravity="center_vertical|start"
-            android:maxLines="1"
-            android:padding="16dp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            android:textColor="@android:color/white"
-            tools:text="This is a Placeholder of Titles" />
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center|start"
+            tools:text="+15 cargas" />
 
-
-        <ProgressBar
-            android:tag="progressBar"
-            style="?android:attr/progressBarStyleSmall"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="16dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="vertical"
+            android:paddingStart="5dp"
+            tools:ignore="RtlSymmetry">
 
-        <ImageView
-            android:tag="arrow"
+            <TextView
+                android:id="@+id/totalKM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center_vertical|start"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@android:color/white"
+                tools:text="+785" />
+
+            <TextView
+                android:id="@+id/monthDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Septiembre, 2020" />
+        </LinearLayout>
+
+
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="10dp"
-            android:contentDescription="@string/arrow_indicator"
-            android:src="@drawable/ic_baseline_keyboard_arrow_down" />
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="16dp"
+                android:tag="progressBar"
+                android:visibility="gone" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:contentDescription="@string/arrow_indicator"
+                android:src="@drawable/ic_baseline_keyboard_arrow_down"
+                android:tag="arrow" />
+        </FrameLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
