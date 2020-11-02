@@ -1,3 +1,10 @@
 package com.anandy.motoechargetracker.domain
 
-data class MonthlyCharge(var monthDate: String, var totalKilometers: Int, var totalCharges: Int)
+import java.util.*
+
+data class MonthlyCharge(
+    var monthDate: Date,
+    var totalKilometers: Int,
+    var totalCharges: Int,
+    var lastKilometers: Int = 0
+)

@@ -105,14 +105,10 @@ class MainViewModel(
     }
 
     override suspend fun onLoadChildRecords(parent: MonthlyCharge): List<BatteryCharge> {
-        val monthDate = parent.monthDate.split("-")
-        val month = monthDate[0].toInt() - 1
-        val year = monthDate[1].toInt()
 
         val calendar = Calendar.getInstance()
+        calendar.time = parent.monthDate
         calendar.set(Calendar.DAY_OF_MONTH, 1)
-        calendar.set(Calendar.MONTH, month)
-        calendar.set(Calendar.YEAR, year)
 
         val startDate = calendar.time.startDate().toChargeDate()
 
@@ -124,7 +120,7 @@ class MainViewModel(
 
         Log.d(
             "MotoE",
-            "Loading charge records from $startDate to $endDate from month range $monthDate"
+            "Loading charge records from $startDate to $endDate from month range ${parent.monthDate}"
         )
         return registeredCharges.invoke(startDate, endDate)
     }

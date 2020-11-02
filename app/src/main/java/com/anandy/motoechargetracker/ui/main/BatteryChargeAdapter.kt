@@ -44,22 +44,36 @@ class BatteryChargeAdapter(
 
     override fun bindChildViewHolder(
         holder: AsyncViewHolder,
-        items: List<BatteryCharge>,
-        index: Int
+        rowIndex: Int,
+        itemIndex: Int
     ) {
-        val item = items[index]
-        val nextItem = if (items.size > index + 1) items[index + 1] else null
+        val nextHeader = if (items.size > rowIndex + 1) items[rowIndex + 1].parent else null
+        val rowItems = items[rowIndex].childs
+        val item = rowItems[itemIndex]
+        val nextItem = when {
+            rowItems.size > itemIndex + 1 -> rowItems[itemIndex + 1]
+            nextHeader != null -> BatteryCharge(
+                kilometers = nextHeader.lastKilometers,
+                date = nextHeader.monthDate
+            )
+            else -> null
+        }
+
         holder.itemView.setOnClickListener {
             clickListener(ChargeItemAction.EDIT, item)
         }
+
         (holder as ChildViewHolder).bind(item, nextItem, clickListener)
     }
 
     class ParentViewHolder(view: View) : AsyncViewHolder(view) {
         private val binding = BatteryChargeParentBinding.bind(view)
+        private val format = SimpleDateFormat("MMMM, yyyy", Locale.US)
 
         fun bind(item: MonthlyCharge) {
-            binding.title.text = item.monthDate
+            binding.charges.text = "+${item.totalCharges} cargas"
+            binding.totalKM.text = "+${item.totalKilometers.toString()} km"
+            binding.monthDate.text = format.format(item.monthDate)
         }
     }
 

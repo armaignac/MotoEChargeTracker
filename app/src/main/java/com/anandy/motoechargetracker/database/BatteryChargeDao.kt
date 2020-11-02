@@ -40,11 +40,13 @@ interface BatteryChargeDao {
     fun getCurrentResetId(): Int
 
     @Query(
-        "SELECT strftime('%m-%Y', chargeDate) as monthDate, " +
+        "SELECT max(chargeDate) as monthDate, " +
                 "case when (max(kilometers) = min(kilometers)) " +
                 "  then max(kilometers) " +
                 "  else max(kilometers) - min(kilometers) " +
-                "end as totalKilometers, count(id) as totalCharges " +
+                "end as totalKilometers, " +
+                "count(id) as totalCharges, " +
+                "max(kilometers) as lastKilometers " +
                 "FROM BatteryCharge " +
                 "GROUP BY strftime('%m-%Y', chargeDate) " +
                 "ORDER BY strftime('%m-%Y', chargeDate) DESC"

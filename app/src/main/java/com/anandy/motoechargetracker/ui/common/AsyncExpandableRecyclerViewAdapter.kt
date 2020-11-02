@@ -13,7 +13,7 @@ import java.lang.Exception
 abstract class AsyncExpandableRecyclerViewAdapter<P, CH>(private val itemsLoader: AsyncItemLoad<P, CH>) :
     RecyclerView.Adapter<AsyncViewHolder>(), Scope by Scope.Impl() {
 
-    private var items: List<Row<P, CH>> by basicDiffUtil(
+    protected var items: List<Row<P, CH>> by basicDiffUtil(
         emptyList()
     )
 
@@ -30,8 +30,8 @@ abstract class AsyncExpandableRecyclerViewAdapter<P, CH>(private val itemsLoader
     abstract fun createChildViewHolder(parent: ViewGroup): AsyncViewHolder
     abstract fun bindChildViewHolder(
         holder: AsyncViewHolder,
-        items: List<CH>,
-        index: Int
+        rowIndex: Int,
+        itemIndex: Int
     )
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AsyncViewHolder {
@@ -51,21 +51,21 @@ abstract class AsyncExpandableRecyclerViewAdapter<P, CH>(private val itemsLoader
             bindParentViewHolder(holder, row.parent)
             holder.itemView.setOnClickListener { onParentClicked(holder, row, position) }
         } else {
-            val itemPair = findItemFromPosition<Pair<Int, Row<P, CH>>>(position)
-            bindChildViewHolder(holder, itemPair.second.childs, itemPair.first)
+            val itemPair = findItemFromPosition<Pair<Int, Int>>(position)
+            bindChildViewHolder(holder, itemPair.first, itemPair.second)
         }
     }
 
     private fun <R> findItemFromPosition(position: Int): R {
         var rowCount = 0
-        for (item in items) {
+        for ((rowIndex, item) in items.withIndex()) {
             if (rowCount == position) {
                 return item as R
             }
             rowCount++
             for (index in item.childs.indices) {
                 if (rowCount == position) {
-                    return Pair(index, item) as R
+                    return Pair(rowIndex, index) as R
                 }
                 rowCount++
             }
