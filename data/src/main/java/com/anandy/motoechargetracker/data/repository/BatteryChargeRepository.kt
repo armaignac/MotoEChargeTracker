@@ -25,15 +25,25 @@ class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
             populateItems().forEach { this.saveCharge(it) }
         }
         val dbRecords = localDataSource.getMonthlyCharges()
+        var resetMonthlyCharge: MonthlyCharge? = null
         var record: MonthlyCharge? = null
+
         for (dbRecord in dbRecords) {
             if (record == null) {
                 record = dbRecord
             } else {
+                //If charge with reset Id in same month
                 if (record.monthGroup == dbRecord.monthGroup) {
-                    record.totalCharges += dbRecord.totalCharges
-                    record.totalKilometers += dbRecord.totalKilometers
+                    resetMonthlyCharge = dbRecord
+                    record.totalCharges += resetMonthlyCharge.totalCharges
+                    record.totalKilometers += resetMonthlyCharge.totalKilometers
                 } else {
+                    record.totalKilometers = when (resetMonthlyCharge == null) {
+                        true -> record.lastKilometers - dbRecord.lastKilometers
+                        false -> ((record.totalKilometers - resetMonthlyCharge.totalKilometers)
+                                + (resetMonthlyCharge.lastKilometers - dbRecord.lastKilometers))
+                    }
+                    resetMonthlyCharge = null
                     records.add(record)
                     record = dbRecord
                 }
