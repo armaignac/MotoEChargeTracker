@@ -41,6 +41,7 @@ interface BatteryChargeDao {
 
     @Query(
         "SELECT max(chargeDate) as monthDate, " +
+                "strftime('%m-%Y', chargeDate) as monthGroup, " +
                 "case when (max(kilometers) = min(kilometers)) " +
                 "  then max(kilometers) " +
                 "  else max(kilometers) - min(kilometers) " +
@@ -48,7 +49,7 @@ interface BatteryChargeDao {
                 "count(id) as totalCharges, " +
                 "max(kilometers) as lastKilometers " +
                 "FROM BatteryCharge " +
-                "GROUP BY strftime('%m-%Y', chargeDate) " +
+                "GROUP BY strftime('%m-%Y', chargeDate), resetId " +
                 "ORDER BY strftime('%m-%Y', chargeDate) DESC"
     )
     fun getMonthlyCharges(): List<MonthlyCharge>

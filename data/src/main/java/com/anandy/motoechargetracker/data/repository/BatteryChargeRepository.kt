@@ -4,6 +4,7 @@ import com.anandy.motoechargetracker.data.source.LocalDataSource
 import com.anandy.motoechargetracker.domain.BatteryCharge
 import com.anandy.motoechargetracker.domain.MonthlyCharge
 import java.util.*
+import kotlin.collections.ArrayList
 
 class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
 
@@ -19,10 +20,29 @@ class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
     }
 
     suspend fun getMonthlyRecords(): List<MonthlyCharge> {
+        val records = ArrayList<MonthlyCharge>()
         if (localDataSource.isEmpty()) {
             populateItems().forEach { this.saveCharge(it) }
         }
-        return localDataSource.getMonthlyCharges()
+        val dbRecords = localDataSource.getMonthlyCharges()
+        var record: MonthlyCharge? = null
+        for (dbRecord in dbRecords) {
+            if (record == null) {
+                record = dbRecord
+            } else {
+                if (record.monthGroup == dbRecord.monthGroup) {
+                    record.totalCharges += dbRecord.totalCharges
+                    record.totalKilometers += dbRecord.totalKilometers
+                } else {
+                    records.add(record)
+                    record = dbRecord
+                }
+            }
+        }
+        if (record != null) {
+            records.add(record)
+        }
+        return records
     }
 
     suspend fun remove(charge: BatteryCharge) = localDataSource.remove(charge.id)
@@ -53,6 +73,7 @@ class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
             BatteryCharge(0, 51, getDate(20, Calendar.JULY)),
             BatteryCharge(0, 89, getDate(22, Calendar.JULY)),
             BatteryCharge(0, 126, getDate(23, Calendar.JULY)),
+            BatteryCharge(0, 156, getDate(24, Calendar.JULY)),
             BatteryCharge(0, 201, getDate(25, Calendar.JULY)),
             BatteryCharge(0, 234, getDate(26, Calendar.JULY)),
             BatteryCharge(0, 264, getDate(27, Calendar.JULY)),
