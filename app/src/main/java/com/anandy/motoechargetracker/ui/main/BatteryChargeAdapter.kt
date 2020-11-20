@@ -8,6 +8,7 @@ import com.anandy.motoechargetracker.databinding.BatteryChargeRecordBinding
 import com.anandy.motoechargetracker.domain.BatteryCharge
 import com.anandy.motoechargetracker.domain.MonthlyCharge
 import com.anandy.motoechargetracker.inflate
+import com.anandy.motoechargetracker.startDate
 import com.anandy.motoechargetracker.ui.common.AsyncExpandableRecyclerViewAdapter
 import com.anandy.motoechargetracker.ui.common.AsyncItemLoad
 import com.anandy.motoechargetracker.ui.common.AsyncViewHolder
@@ -91,7 +92,7 @@ class BatteryChargeAdapter(
             binding.textKMDifference.text = ""
             binding.textDateDifference.text = ""
             nextItem?.apply {
-                val diffInMillisec: Long = item.date.time - date.time
+                val diffInMillisec: Long = item.date.startDate().time - date.startDate().time
                 val days = TimeUnit.MILLISECONDS.toDays(diffInMillisec)
                 binding.textKMDifference.text = "+${item.kilometers - kilometers} km"
                 binding.textDateDifference.text = "+ $days día(s)"
