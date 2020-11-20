@@ -93,7 +93,7 @@ class RegisterChargeFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.save_charge -> {
-                if (binding.textKilometers.text.isNotEmpty() && binding.textKilometers.text.toString()
+                if (binding.textKilometers.text!!.isNotEmpty() && binding.textKilometers.text.toString()
                         .toInt() > 0
                 ) {
                     if (charge == null) {

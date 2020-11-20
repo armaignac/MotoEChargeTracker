@@ -17,29 +17,40 @@
         tools:context=".ui.register.RegisterChargeFragment">
 
 
-        <EditText
-            android:id="@+id/textKilometers"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/kilometros_recorridos"
-            android:inputType="number"
-            android:paddingBottom="10dp"
-            android:text="@{viewModel.kilometers}" />
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/textDateCharge"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textKilometers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/kilometros_recorridos"
+                android:inputType="number"
+                android:paddingBottom="10dp"
+                android:text="@{viewModel.kilometers}" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:clickable="true"
-            android:drawableRight="@android:drawable/ic_menu_my_calendar"
-            android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-            android:ems="10"
-            android:focusable="true"
-            android:hint="@string/date"
-            android:inputType="date"
-            android:paddingBottom="10dp"
-            app:chargeDate="@{viewModel.chargeDate}" />
+            android:layout_marginTop="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textDateCharge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                android:drawableRight="@android:drawable/ic_menu_my_calendar"
+                android:ems="10"
+                android:focusable="true"
+                android:hint="@string/date"
+                android:inputType="date"
+                android:paddingBottom="10dp"
+                app:chargeDate="@{viewModel.chargeDate}" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/isResetCharge"
