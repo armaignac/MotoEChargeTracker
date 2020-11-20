@@ -13,6 +13,8 @@ import java.lang.Exception
 abstract class AsyncExpandableRecyclerViewAdapter<P, CH>(private val itemsLoader: AsyncItemLoad<P, CH>) :
     RecyclerView.Adapter<AsyncViewHolder>(), Scope by Scope.Impl() {
 
+    var expandFirstGroup = true
+
     protected var items: List<Row<P, CH>> by basicDiffUtil(
         emptyList()
     )
@@ -50,10 +52,14 @@ abstract class AsyncExpandableRecyclerViewAdapter<P, CH>(private val itemsLoader
             val row = findItemFromPosition<Row<P, CH>>(position)
             bindParentViewHolder(holder, row.parent)
             holder.itemView.setOnClickListener { onParentClicked(holder, row, position) }
+            if (position == 0 && expandFirstGroup) {
+                onParentClicked(holder, row, position)
+            }
         } else {
             val itemPair = findItemFromPosition<Pair<Int, Int>>(position)
             bindChildViewHolder(holder, itemPair.first, itemPair.second)
         }
+
     }
 
     private fun <R> findItemFromPosition(position: Int): R {
