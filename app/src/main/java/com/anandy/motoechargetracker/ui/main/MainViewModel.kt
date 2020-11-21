@@ -32,12 +32,6 @@ class MainViewModel(
     private val _items = MutableLiveData<List<MonthlyCharge>>()
     val items: LiveData<List<MonthlyCharge>> get() = _items
 
-    private val _navigateToRegister = MutableLiveData<Event<Int>>()
-    val navigateToRegister: LiveData<Event<Int>> get() = _navigateToRegister
-
-    private val _deleteCharge = MutableLiveData<Event<BatteryCharge>>()
-    val deleteCharge: LiveData<Event<BatteryCharge>> get() = _deleteCharge
-
     private val _toastMessage = MutableLiveData<Event<String>>()
     val toastMessage: LiveData<Event<String>> get() = _toastMessage
 
@@ -53,16 +47,6 @@ class MainViewModel(
     private fun refresh() {
         launch {
             _items.value = monthlyCharges.invoke()
-        }
-    }
-
-    fun onClickedItemAction(action: BatteryChargeAdapter.ChargeItemAction, item: BatteryCharge) {
-        when (action) {
-            BatteryChargeAdapter.ChargeItemAction.REMOVE -> _deleteCharge.value = Event(item)
-            BatteryChargeAdapter.ChargeItemAction.EDIT -> {
-                Log.d("MotoEChargeTraker", "Selected charge $item")
-                _navigateToRegister.value = Event(item.id)
-            }
         }
     }
 

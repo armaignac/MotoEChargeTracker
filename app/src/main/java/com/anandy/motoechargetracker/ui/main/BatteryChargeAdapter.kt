@@ -20,7 +20,8 @@ import java.util.concurrent.TimeUnit
 
 class BatteryChargeAdapter(
     itemsLoader: AsyncItemLoad<MonthlyCharge, BatteryCharge>,
-    private val clickListener: (ChargeItemAction, BatteryCharge) -> Unit
+    private val onEditCharge: (BatteryCharge) -> Unit,
+    private val onRemoveCharge: (BatteryCharge) -> Unit
 ) :
     AsyncExpandableRecyclerViewAdapter<MonthlyCharge, BatteryCharge>(itemsLoader) {
 
@@ -64,12 +65,12 @@ class BatteryChargeAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            clickListener(ChargeItemAction.EDIT, item)
+            onEditCharge(item)
         }
         holder.itemView.animation =
             AnimationUtils.loadAnimation(holder.itemView.context, R.anim.items)
 
-        (holder as ChildViewHolder).bind(item, nextItem, clickListener)
+        (holder as ChildViewHolder).bind(item, nextItem, this.onRemoveCharge)
     }
 
     class ParentViewHolder(view: View) : AsyncViewHolder(view) {
@@ -90,7 +91,7 @@ class BatteryChargeAdapter(
         fun bind(
             item: BatteryCharge,
             nextItem: BatteryCharge?,
-            clickListener: (ChargeItemAction, BatteryCharge) -> Unit
+            onRemoveCharge: (BatteryCharge) -> Unit
         ) {
             binding.textChargeKM.text = item.kilometers.toString()
             binding.textChargeDate.text = format.format(item.date)
@@ -103,13 +104,8 @@ class BatteryChargeAdapter(
                 binding.textDateDifference.text = "+ $days día(s)"
             }
             binding.deleteRecord.setOnClickListener {
-                clickListener(ChargeItemAction.REMOVE, item)
+                onRemoveCharge(item)
             }
         }
-    }
-
-    enum class ChargeItemAction {
-        REMOVE,
-        EDIT
     }
 }

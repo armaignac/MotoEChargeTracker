@@ -8,7 +8,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
@@ -16,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.anandy.motoechargetracker.*
 import com.anandy.motoechargetracker.databinding.FragmentMainBinding
+import com.anandy.motoechargetracker.domain.BatteryCharge
 import com.anandy.motoechargetracker.ui.common.EventObserver
 import java.io.BufferedReader
 import java.io.IOException
@@ -62,28 +62,9 @@ class MainFragment : Fragment() {
 
         with(mainViewModel) {
             toastMessage.observe(viewLifecycleOwner, EventObserver { message -> toast(message) })
-            navigateToRegister.observe(viewLifecycleOwner, EventObserver { id ->
-                val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment(
-                    id,
-                    requireContext().getString(R.string.edit)
-                )
-                navController.navigate(action)
-            })
-            deleteCharge.observe(viewLifecycleOwner, EventObserver { charge ->
-                val dialogBuilder = AlertDialog.Builder(this@MainFragment.context)
-                dialogBuilder.setTitle("Eliminar")
-                dialogBuilder.setMessage("¿Desea eliminar el registro ${charge.kilometers}?")
-                dialogBuilder.setPositiveButton("Si") { _, _ ->
-                    mainViewModel.onRemoveItem(charge)
-                    recordsAdapter.notifyChildRemoved(charge)
-                }
-                dialogBuilder.setNegativeButton("No") { _, _ -> }
-                dialogBuilder.show()
-            })
-
         }
 
-        recordsAdapter = BatteryChargeAdapter(mainViewModel, mainViewModel::onClickedItemAction)
+        recordsAdapter = BatteryChargeAdapter(mainViewModel, ::onEditCharge, ::onRemoveCharge)
 
         binding.apply {
             viewModel = mainViewModel
@@ -98,6 +79,25 @@ class MainFragment : Fragment() {
                 navController.navigate(action)
             }
         }
+    }
+
+    private fun onEditCharge(charge: BatteryCharge) {
+        val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment(
+            charge.id, requireContext().getString(R.string.edit)
+        )
+        navController.navigate(action)
+    }
+
+    private fun onRemoveCharge(charge: BatteryCharge) {
+        val dialogBuilder = AlertDialog.Builder(this@MainFragment.context)
+        dialogBuilder.setTitle("Eliminar")
+        dialogBuilder.setMessage("¿Desea eliminar el registro ${charge.kilometers}?")
+        dialogBuilder.setPositiveButton("Si") { _, _ ->
+            mainViewModel.onRemoveItem(charge)
+            recordsAdapter.notifyChildRemoved(charge)
+        }
+        dialogBuilder.setNegativeButton("No") { _, _ -> }
+        dialogBuilder.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
