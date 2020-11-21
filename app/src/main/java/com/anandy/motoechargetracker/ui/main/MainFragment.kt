@@ -63,7 +63,10 @@ class MainFragment : Fragment() {
         with(mainViewModel) {
             toastMessage.observe(viewLifecycleOwner, EventObserver { message -> toast(message) })
             navigateToRegister.observe(viewLifecycleOwner, EventObserver { id ->
-                val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment(id)
+                val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment(
+                    id,
+                    requireContext().getString(R.string.edit)
+                )
                 navController.navigate(action)
             })
             deleteCharge.observe(viewLifecycleOwner, EventObserver { charge ->
@@ -89,7 +92,9 @@ class MainFragment : Fragment() {
             batteryChargeRecycler.layoutManager = LinearLayoutManager(context)
 
             fab.setOnClickListener { _ ->
-                val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment()
+                val action = MainFragmentDirections.actionMainFragmentToRegisterChargeFragment(
+                    title = requireContext().getString(R.string.title_activity_register_charge)
+                )
                 navController.navigate(action)
             }
         }

@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/registerChargeFragment"
         android:name="com.anandy.motoechargetracker.ui.register.RegisterChargeFragment"
-        android:label="@string/title_activity_register_charge">
+        android:label="{title}">
         <action
             android:id="@+id/action_registerChargeFragment_to_mainFragment"
             app:destination="@id/mainFragment"
@@ -32,5 +32,9 @@
             android:name="id"
             app:argType="integer"
             android:defaultValue="-1" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+
     </fragment>
 </navigation>

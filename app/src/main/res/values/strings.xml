@@ -2,6 +2,7 @@
     <string name="app_name">MotoE</string>
     <string name="title_activity_main">Cargas registradas</string>
     <string name="title_activity_register_charge">Registrar carga</string>
+    <string name="edit">Editar</string>
     <string name="save">Guardar</string>
     <string name="export_records">Exportar registros</string>
     <string name="import_records">Importar registros</string>
