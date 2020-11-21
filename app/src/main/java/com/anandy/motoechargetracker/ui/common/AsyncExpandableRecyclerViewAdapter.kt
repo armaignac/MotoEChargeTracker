@@ -52,7 +52,7 @@ abstract class AsyncExpandableRecyclerViewAdapter<P, CH>(private val itemsLoader
             val row = findItemFromPosition<Row<P, CH>>(position)
             bindParentViewHolder(holder, row.parent)
             holder.itemView.setOnClickListener { onParentClicked(holder, row, position) }
-            if (position == 0 && expandFirstGroup) {
+            if (position == 0 && expandFirstGroup && !row.expanded) {
                 onParentClicked(holder, row, position)
             }
         } else {
