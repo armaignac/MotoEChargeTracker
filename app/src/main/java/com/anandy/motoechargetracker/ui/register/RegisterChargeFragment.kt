@@ -51,8 +51,6 @@ class RegisterChargeFragment : Fragment() {
         super.onCreate(savedInstanceState)
         navController = view.findNavController()
 
-        (activity as AppCompatActivity).setTitle(R.string.title_activity_register_charge)
-
         component = app.component.plus(RegisterChargeFragmentModule())
 
         datePicker = DatePickerFragment() { selectedDate ->

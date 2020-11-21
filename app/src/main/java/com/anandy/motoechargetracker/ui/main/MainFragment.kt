@@ -33,7 +33,7 @@ class MainFragment : Fragment() {
     }
     private lateinit var recordsAdapter: BatteryChargeAdapter
     private val coarsePermissionRequester by lazy {
-        PermissionRequester(activity!!)
+        PermissionRequester(requireActivity())
     }
     private val chooserRequestCode = 123
     private lateinit var navController: NavController
@@ -57,8 +57,6 @@ class MainFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = findNavController()
-
-        (activity as AppCompatActivity).setTitle(R.string.title_activity_main)
 
         component = app.component.plus(MainFragmentModule())
 
@@ -141,7 +139,7 @@ class MainFragment : Fragment() {
             try {
                 br = BufferedReader(
                     InputStreamReader(
-                        this.activity!!.contentResolver.openInputStream(uri)
+                        this.requireActivity().contentResolver.openInputStream(uri)
                     )
                 )
                 val content = br.readText()

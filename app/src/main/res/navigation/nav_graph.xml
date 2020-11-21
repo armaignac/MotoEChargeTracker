@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.anandy.motoechargetracker.ui.main.MainFragment"
-        android:label="MainFragment">
+        android:label="@string/title_activity_main">
         <action
             android:id="@+id/action_mainFragment_to_registerChargeFragment"
             app:destination="@id/registerChargeFragment"
@@ -19,7 +19,7 @@
     <fragment
         android:id="@+id/registerChargeFragment"
         android:name="com.anandy.motoechargetracker.ui.register.RegisterChargeFragment"
-        android:label="RegisterChargeFragment">
+        android:label="@string/title_activity_register_charge">
         <action
             android:id="@+id/action_registerChargeFragment_to_mainFragment"
             app:destination="@id/mainFragment"
