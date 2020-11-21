@@ -2,6 +2,7 @@ package com.anandy.motoechargetracker.ui.main
 
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import com.anandy.motoechargetracker.R
 import com.anandy.motoechargetracker.databinding.BatteryChargeParentBinding
 import com.anandy.motoechargetracker.databinding.BatteryChargeRecordBinding
@@ -32,6 +33,8 @@ class BatteryChargeAdapter(
     }
 
     override fun bindParentViewHolder(holder: AsyncViewHolder, parentItem: MonthlyCharge) {
+        holder.itemView.animation =
+            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.fade_in)
         (holder as ParentViewHolder).bind(parentItem)
     }
 
@@ -63,6 +66,8 @@ class BatteryChargeAdapter(
         holder.itemView.setOnClickListener {
             clickListener(ChargeItemAction.EDIT, item)
         }
+        holder.itemView.animation =
+            AnimationUtils.loadAnimation(holder.itemView.context, R.anim.items)
 
         (holder as ChildViewHolder).bind(item, nextItem, clickListener)
     }
