@@ -10,7 +10,11 @@
         android:label="MainFragment">
         <action
             android:id="@+id/action_mainFragment_to_registerChargeFragment"
-            app:destination="@id/registerChargeFragment" />
+            app:destination="@id/registerChargeFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/registerChargeFragment"
@@ -18,7 +22,12 @@
         android:label="RegisterChargeFragment">
         <action
             android:id="@+id/action_registerChargeFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/mainFragment"
+            app:popUpTo="@id/mainFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
         <argument
             android:name="id"
             app:argType="integer"
