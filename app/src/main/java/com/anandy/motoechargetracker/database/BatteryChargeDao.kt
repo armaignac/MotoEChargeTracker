@@ -50,7 +50,7 @@ interface BatteryChargeDao {
                 "max(kilometers) as lastKilometers " +
                 "FROM BatteryCharge " +
                 "GROUP BY strftime('%m-%Y', chargeDate), resetId " +
-                "ORDER BY strftime('%m-%Y', chargeDate) DESC"
+                "ORDER BY chargeDate DESC"
     )
     fun getMonthlyCharges(): List<MonthlyCharge>
 }
