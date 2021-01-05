@@ -21,9 +21,9 @@ class BatteryChargeRepository(private val localDataSource: LocalDataSource) {
 
     suspend fun getMonthlyRecords(): List<MonthlyCharge> {
         val records = ArrayList<MonthlyCharge>()
-        if (localDataSource.isEmpty()) {
-            populateItems().forEach { this.saveCharge(it) }
-        }
+//        if (localDataSource.isEmpty()) {
+//            populateItems().forEach { this.saveCharge(it) }
+//        }
         val dbRecords = localDataSource.getMonthlyCharges()
         var resetMonthlyCharge: MonthlyCharge? = null
         var record: MonthlyCharge? = null
