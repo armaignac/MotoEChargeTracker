@@ -14,7 +14,7 @@ interface BatteryChargeDao {
                 "      else (date(chargeDate) >= date(:startDate) " +
                 "        and date(chargeDate) <= date(:endDate))" +
                 "      end " +
-                "ORDER BY date(chargeDate) DESC"
+                "ORDER BY chargeDate DESC"
     )
     fun getRecords(startDate: String, endDate: String): List<BatteryCharge>
 
