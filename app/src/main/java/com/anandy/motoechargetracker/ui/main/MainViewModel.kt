@@ -101,11 +101,6 @@ class MainViewModel(
             calendar.getActualMaximum(Calendar.DAY_OF_MONTH)
         )
         val endDate = calendar.time.endDate().toChargeDate()
-
-        Log.d(
-            "MotoE",
-            "Loading charge records from $startDate to $endDate from month range ${parent.monthDate}"
-        )
         return registeredCharges.invoke(startDate, endDate)
     }
 }

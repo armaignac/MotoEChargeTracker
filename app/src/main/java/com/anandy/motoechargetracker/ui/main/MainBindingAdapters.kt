@@ -7,6 +7,5 @@ import com.anandy.motoechargetracker.domain.MonthlyCharge
 
 @BindingAdapter("items")
 fun RecyclerView.setItems(items: List<MonthlyCharge>?) {
-    Log.d("MotoE", "Binding Adapter Items size ${items}")
     (adapter as? BatteryChargeAdapter)?.setParentRecords(items ?: emptyList())
 }
