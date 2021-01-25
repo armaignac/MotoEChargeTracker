@@ -6,7 +6,7 @@ import com.anandy.motoechargetracker.database.BatteryChargeDatabase
 import com.anandy.motoechargetracker.di.BatteryChargeComponent
 import com.anandy.motoechargetracker.di.DaggerBatteryChargeComponent
 
-class BatteryChargeApp : Application() {
+class MotoEChargeTrackerApp : Application() {
 
     lateinit var component: BatteryChargeComponent
         private set

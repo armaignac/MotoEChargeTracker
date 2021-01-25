@@ -1,10 +1,6 @@
 package com.anandy.motoechargetracker
 
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
-import android.content.res.Resources
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,16 +8,13 @@ import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.anandy.motoechargetracker.database.Converters
-import com.anandy.motoechargetracker.domain.BatteryCharge
 
 import java.util.*
 import kotlin.properties.Delegates
@@ -68,13 +61,13 @@ inline fun <reified T : ViewModel> Fragment.getViewModel(crossinline factory: ()
     return ViewModelProvider(this, vmFactory).get()
 }
 
-val Context.app: BatteryChargeApp
-    get() = applicationContext as BatteryChargeApp
+val Context.app: MotoEChargeTrackerApp
+    get() = applicationContext as MotoEChargeTrackerApp
 
-val Fragment.app: BatteryChargeApp
+val Fragment.app: MotoEChargeTrackerApp
     get() = ((activity?.app)
         ?: IllegalStateException("Fragment needs to be attach to the activity to access the App instance"))
-            as BatteryChargeApp
+            as MotoEChargeTrackerApp
 
 fun Date.toChargeDate(): String = Converters.dateFormat.format(this)
 
